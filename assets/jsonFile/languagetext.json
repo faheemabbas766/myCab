@@ -1,0 +1,1992 @@
+{
+    "allText": [
+        {
+            "textId": "Sign Up",
+            "languageTextList": [
+                {
+                    "fr": "S'inscrire"
+                },
+                {
+                    "ar": "سجل"
+                },
+                {
+                    "ja": "サインアップ"
+                }
+            ]
+        },
+        {
+            "textId": "Sign In",
+            "languageTextList": [
+                {
+                    "fr": "Se connecter"
+                },
+                {
+                    "ar": "تسجيل الدخول "
+                },
+                {
+                    "ja": " サインイン"
+                }
+            ]
+        },
+        {
+            "textId": "By clicking start, your agree to our",
+            "languageTextList": [
+                {
+                    "fr": "En cliquant sur démarrer, vous acceptez nos"
+                },
+                {
+                    "ar": "بالنقر فوق ابدأ ، توافق على موقعنا"
+                },
+                {
+                    "ja": "[開始]をクリックすると、"
+                }
+            ]
+        },
+        {
+            "textId": "Terms and Conditions",
+            "languageTextList": [
+                {
+                    "fr": "Termes et conditions"
+                },
+                {
+                    "ar": "الأحكام والشروط"
+                },
+                {
+                    "ja": "規約と条件"
+                }
+            ]
+        },
+        {
+            "textId": "Connect with facebook",
+            "languageTextList": [
+                {
+                    "fr": "Connecter avec Facebook"
+                },
+                {
+                    "ar": "تواصل مع الفيسبوك"
+                },
+                {
+                    "ja": "Facebookとの接続"
+                }
+            ]
+        },
+        {
+            "textId": "Login with your phone number",
+            "languageTextList": [
+                {
+                    "fr": "Connectez-vous avec votre numéro de téléphone"
+                },
+                {
+                    "ar": "تسجيل الدخول باستخدام رقم هاتفك"
+                },
+                {
+                    "ja": "電話番号でログイン"
+                }
+            ]
+        },
+        {
+            "textId": "Phone Number",
+            "languageTextList": [
+                {
+                    "fr": "Numéro de téléphone"
+                },
+                {
+                    "ar": "رقم الهاتف"
+                },
+                {
+                    "ja": "電話番号"
+                }
+            ]
+        },
+        {
+            "textId": "Next",
+            "languageTextList": [
+                {
+                    "fr": "Prochain"
+                },
+                {
+                    "ar": "التالى"
+                },
+                {
+                    "ja": "次"
+                }
+            ]
+        },
+        {
+            "textId": "Search...",
+            "languageTextList": [
+                {
+                    "fr": "Chercher..."
+                },
+                {
+                    "ar": "بحث..."
+                },
+                {
+                    "ja": "探す..."
+                }
+            ]
+        },
+        {
+            "textId": "Select your country.",
+            "languageTextList": [
+                {
+                    "fr": "Sélectionnez votre pays."
+                },
+                {
+                    "ar": "اختر بلدك."
+                },
+                {
+                    "ja": "あなたの国を選択。"
+                }
+            ]
+        },
+        {
+            "textId": "Phone Verification",
+            "languageTextList": [
+                {
+                    "fr": "Vérification du téléphone"
+                },
+                {
+                    "ar": "التحقق من الهاتف"
+                },
+                {
+                    "ja": "電話認証"
+                }
+            ]
+        },
+        {
+            "textId": "Enter your OTP code here",
+            "languageTextList": [
+                {
+                    "fr": "Entrez votre code OTP ici"
+                },
+                {
+                    "ar": "أدخل رمز OTP الخاص بك هنا"
+                },
+                {
+                    "ja": "ここにOTPコードを入力してください"
+                }
+            ]
+        },
+        {
+            "textId": "Verify now",
+            "languageTextList": [
+                {
+                    "fr": "Vérifiez maintenant"
+                },
+                {
+                    "ar": "تحقق الآن"
+                },
+                {
+                    "ja": "今すぐ確認"
+                }
+            ]
+        },
+        {
+            "textId": "Gregory Smith",
+            "languageTextList": [
+                {
+                    "fr": "Gregory Smith"
+                },
+                {
+                    "ar": "غريغوري سميث"
+                },
+                {
+                    "ja": "グレゴリー・スミス"
+                }
+            ]
+        },
+        {
+            "textId": "Today at 5:03 PM",
+            "languageTextList": [
+                {
+                    "fr": "Aujourd'hui à 17:03"
+                },
+                {
+                    "ar": "اليوم في 5:03 PM"
+                },
+                {
+                    "ja": "今日の午後5時3分"
+                }
+            ]
+        },
+        {
+            "textId": "Hello,are you nearby?",
+            "languageTextList": [
+                {
+                    "fr": "Bonjour, êtes-vous à proximité?"
+                },
+                {
+                    "ar": "مرحبا ، هل أنت قريب؟"
+                },
+                {
+                    "ja": "こんにちは、近くにいますか？"
+                }
+            ]
+        },
+        {
+            "textId": "OK, Iam waiting at Vinmark\nStore",
+            "languageTextList": [
+                {
+                    "fr": "OK, j'attends au Vinmark\nStore"
+                },
+                {
+                    "ar": "حسنا ، أنا في انتظار Vinmark\nالمتجر"
+                },
+                {
+                    "ja": "OK、Vinmarkで待っているIam\nStore"
+                }
+            ]
+        },
+        {
+            "textId": "Today at 5:33 PM",
+            "languageTextList": [
+                {
+                    "fr": "Aujourd'hui à 17h33"
+                },
+                {
+                    "ar": "اليوم في 5:33 PM"
+                },
+                {
+                    "ja": "今日の午後5時33分"
+                }
+            ]
+        },
+        {
+            "textId": "Sorry, i am stuck in traffic.\nplease give me amoment",
+            "languageTextList": [
+                {
+                    "fr": "Désolé, je suis coincé dans le trafic.\nVeuillez me donner un moment"
+                },
+                {
+                    "ar": "آسف ، أنا عالق في حركة المرور.\n من فضلك أعطني amoment"
+                },
+                {
+                    "ja": "申し訳ありませんが、交通渋滞に巻き込まれています。\n私に喜びを与えてください"
+                }
+            ]
+        },
+        {
+            "textId": "Type a message...",
+            "languageTextList": [
+                {
+                    "fr": "Tapez un message ..."
+                },
+                {
+                    "ar": "اكتب رسالة ..."
+                },
+                {
+                    "ja": "メッセージを入力..."
+                }
+            ]
+        },
+        {
+            "textId": "Larry Davis",
+            "languageTextList": [
+                {
+                    "fr": "Larry Davis"
+                },
+                {
+                    "ar": "لاري ديفيس"
+                },
+                {
+                    "ja": "ラリー・デイビス"
+                }
+            ]
+        },
+        {
+            "textId": "Cash",
+            "languageTextList": [
+                {
+                    "fr": "En espèces"
+                },
+                {
+                    "ar": "السيولة النقدية"
+                },
+                {
+                    "ja": "現金"
+                }
+            ]
+        },
+        {
+            "textId": "Home",
+            "languageTextList": [
+                {
+                    "fr": "Accueil"
+                },
+                {
+                    "ar": "الصفحة الرئيسية"
+                },
+                {
+                    "ja": "ホーム"
+                }
+            ]
+        },
+        {
+            "textId": "My Wallet",
+            "languageTextList": [
+                {
+                    "fr": "Mon portefeuille"
+                },
+                {
+                    "ar": "محفظتي"
+                },
+                {
+                    "ja": "私の財布"
+                }
+            ]
+        },
+        {
+            "textId": "History",
+            "languageTextList": [
+                {
+                    "fr": "Histoire"
+                },
+                {
+                    "ar": "التاريخ"
+                },
+                {
+                    "ja": "歴史"
+                }
+            ]
+        },
+        {
+            "textId": "Notification",
+            "languageTextList": [
+                {
+                    "fr": "Notification"
+                },
+                {
+                    "ar": "تنبيه"
+                },
+                {
+                    "ja": "お知らせ"
+                }
+            ]
+        },
+        {
+            "textId": "Invite Friends",
+            "languageTextList": [
+                {
+                    "fr": "Inviter des amis"
+                },
+                {
+                    "ar": "ادعو أصدقاء"
+                },
+                {
+                    "ja": "友達を招待"
+                }
+            ]
+        },
+        {
+            "textId": "Setting",
+            "languageTextList": [
+                {
+                    "fr": "Réglage"
+                },
+                {
+                    "ar": "ضبط"
+                },
+                {
+                    "ja": "設定"
+                }
+            ]
+        },
+        {
+            "textId": "Logout",
+            "languageTextList": [
+                {
+                    "fr": "Se déconnecter"
+                },
+                {
+                    "ar": "تسجيل خروج"
+                },
+                {
+                    "ja": "ログアウト"
+                }
+            ]
+        },
+        {
+            "textId": "Confirm",
+            "languageTextList": [
+                {
+                    "fr": "Confirmer"
+                },
+                {
+                    "ar": "تؤكد"
+                },
+                {
+                    "ja": "確認"
+                }
+            ]
+        },
+        {
+            "textId": "105 William St, Chicago, US",
+            "languageTextList": [
+                {
+                    "fr": "105 William St, Chicago, États-Unis"
+                },
+                {
+                    "ar": "105 وليام سانت ، شيكاغو ، الولايات المتحدة"
+                },
+                {
+                    "ja": "105 William St、シカゴ、米国"
+                }
+            ]
+        },
+        {
+            "textId": "465 Swift Village",
+            "languageTextList": [
+                {
+                    "fr": "465 Swift Village"
+                },
+                {
+                    "ar": "465 قرية سويفت"
+                },
+                {
+                    "ja": "465スイフトビレッジ"
+                }
+            ]
+        },
+        {
+            "textId": "Cancelled",
+            "languageTextList": [
+                {
+                    "fr": "Annulé"
+                },
+                {
+                    "ar": "ألغيت"
+                },
+                {
+                    "ja": "Annulé"
+                }
+            ]
+        },
+        {
+            "textId": "090 Joaquian isle Suite 76",
+            "languageTextList": [
+                {
+                    "fr": "090 Joaquian isle Suite 76"
+                },
+                {
+                    "ar": "090 جناح جزيرة Joaquian 76"
+                },
+                {
+                    "ja": "090ジョアキンアイルスイート76"
+                }
+            ]
+        },
+        {
+            "textId": "25 Stacy Falls Suite 453",
+            "languageTextList": [
+                {
+                    "fr": "25 Stacy Falls Suite 453"
+                },
+                {
+                    "ar": "جناح شلالات 25Stacy"
+                },
+                {
+                    "ja": "25ステイシーフォールズスイート"
+                }
+            ]
+        },
+        {
+            "textId": "Completed",
+            "languageTextList": [
+                {
+                    "fr": "Terminé"
+                },
+                {
+                    "ar": "منجز"
+                },
+                {
+                    "ja": "完了しました"
+                }
+            ]
+        },
+        {
+            "textId": "342 Lottie Views 435",
+            "languageTextList": [
+                {
+                    "fr": "342 Lottie Views 435"
+                },
+                {
+                    "ar": "342 لوتي المشاهدات 435"
+                },
+                {
+                    "ja": "342ロッティービュー435"
+                }
+            ]
+        },
+        {
+            "textId": "026 Mitchell Burg Apt. 567",
+            "languageTextList": [
+                {
+                    "fr": "026 Mitchell Burg Apt. 567"
+                },
+                {
+                    "ar": "026 ميتشل بورغ 567"
+                },
+                {
+                    "ja": "026ミッチェルブルク567"
+                }
+            ]
+        },
+        {
+            "textId": "105 William St, Chicago, US",
+            "languageTextList": [
+                {
+                    "fr": "105 William St, Chicago, US"
+                },
+                {
+                    "ar": "105 وليام سانت ، شيكاغو ، الولايات المتحدة"
+                },
+                {
+                    "ja": "105 William St、シカゴ、米国"
+                }
+            ]
+        },
+        {
+            "textId": "Oct 15,2020",
+            "languageTextList": [
+                {
+                    "fr": "15 octobre 2020"
+                },
+                {
+                    "ar": "152020 أكتوبر"
+                },
+                {
+                    "ja": "2020年10月15日"
+                }
+            ]
+        },
+        {
+            "textId": "POPULAR LOCATONS",
+            "languageTextList": [
+                {
+                    "fr": "LOCALITÉS POPULAIRES"
+                },
+                {
+                    "ar": "المواقع الشعبية"
+                },
+                {
+                    "ja": "人気の場所"
+                }
+            ]
+        },
+        {
+            "textId": "Drop-off",
+            "languageTextList": [
+                {
+                    "fr": "Déposer"
+                },
+                {
+                    "ar": "إنزال"
+                },
+                {
+                    "ja": "落ちる"
+                }
+            ]
+        },
+        {
+            "textId": "My current location",
+            "languageTextList": [
+                {
+                    "fr": "Ma position actuelle"
+                },
+                {
+                    "ar": "موقعي الحالي"
+                },
+                {
+                    "ja": "私の現在の場所"
+                }
+            ]
+        },
+        {
+            "textId": "Pickup",
+            "languageTextList": [
+                {
+                    "fr": "Ramasser"
+                },
+                {
+                    "ar": "امسك"
+                },
+                {
+                    "ja": "選び出す"
+                }
+            ]
+        },
+        {
+            "textId": "Henev Art Gallery",
+            "languageTextList": [
+                {
+                    "fr": "Galerie d'art Henev"
+                },
+                {
+                    "ar": "معرض الفن هنيف"
+                },
+                {
+                    "ja": "ヘンエフアートギャラリー"
+                }
+            ]
+        },
+        {
+            "textId": "Ravenna Park",
+            "languageTextList": [
+                {
+                    "fr": "Ravenna Park"
+                },
+                {
+                    "ar": "رافينا بارك"
+                },
+                {
+                    "ja": "ラベンナ公園"
+                }
+            ]
+        },
+        {
+            "textId": "Husky Stadium",
+            "languageTextList": [
+                {
+                    "fr": "Husky Stadium"
+                },
+                {
+                    "ar": "ملعب الاسكيمو"
+                },
+                {
+                    "ja": "ハスキースタジアム"
+                }
+            ]
+        },
+        {
+            "textId": "Woodland Park",
+            "languageTextList": [
+                {
+                    "fr": "Woodland Park"
+                },
+                {
+                    "ar": "غابة بارك"
+                },
+                {
+                    "ja": "ウッドランドパーク"
+                }
+            ]
+        },
+        {
+            "textId": "University of Washington",
+            "languageTextList": [
+                {
+                    "fr": "Université de Washington"
+                },
+                {
+                    "ar": "جامعة واشنطن"
+                },
+                {
+                    "ja": "ワシントン大学"
+                }
+            ]
+        },
+        {
+            "textId": "Apply",
+            "languageTextList": [
+                {
+                    "fr": "Appliquer"
+                },
+                {
+                    "ar": "تطبيق"
+                },
+                {
+                    "ja": "適用する"
+                }
+            ]
+        },
+        {
+            "textId": "Input promo code",
+            "languageTextList": [
+                {
+                    "fr": "Entrez le code promotionnel"
+                },
+                {
+                    "ar": "إدخال الرمز الترويجي"
+                },
+                {
+                    "ja": "入力プロモーションコード"
+                }
+            ]
+        },
+        {
+            "textId": "   Promo Code",
+            "languageTextList": [
+                {
+                    "fr": "   Code promo"
+                },
+                {
+                    "ar": "رمز ترويجي"
+                },
+                {
+                    "ja": "   プロモーションコード"
+                }
+            ]
+        },
+        {
+            "textId": "Just go",
+            "languageTextList": [
+                {
+                    "fr": "Juste aller"
+                },
+                {
+                    "ar": "فقط اذهب"
+                },
+                {
+                    "ja": "ただ行く"
+                }
+            ]
+        },
+        {
+            "textId": "Near by you",
+            "languageTextList": [
+                {
+                    "fr": "Près de chez vous"
+                },
+                {
+                    "ar": "بالقرب من قبلك"
+                },
+                {
+                    "ja": "あなたの近く"
+                }
+            ]
+        },
+        {
+            "textId": "2 min",
+            "languageTextList": [
+                {
+                    "fr": "2 min"
+                },
+                {
+                    "ar": "2 دقيقة"
+                },
+                {
+                    "ja": "2分"
+                }
+            ]
+        },
+        {
+            "textId": "Payment",
+            "languageTextList": [
+                {
+                    "fr": "Paiement"
+                },
+                {
+                    "ar": "دفع"
+                },
+                {
+                    "ja": "支払い"
+                }
+            ]
+        },
+        {
+            "textId": "Promo code",
+            "languageTextList": [
+                {
+                    "fr": "Code promo"
+                },
+                {
+                    "ar": "رمز ترويجي"
+                },
+                {
+                    "ja": "プロモーションコード"
+                }
+            ]
+        },
+        {
+            "textId": "Options",
+            "languageTextList": [
+                {
+                    "fr": "Les options"
+                },
+                {
+                    "ar": "خيارات"
+                },
+                {
+                    "ja": "オプション"
+                }
+            ]
+        },
+        {
+            "textId": "Request",
+            "languageTextList": [
+                {
+                    "fr": "Demande"
+                },
+                {
+                    "ar": "طلب"
+                },
+                {
+                    "ja": "リクエスト"
+                }
+            ]
+        },
+        {
+            "textId": "25 Recommended",
+            "languageTextList": [
+                {
+                    "fr": "25 Recommandé"
+                },
+                {
+                    "ar": "25 الموصى بها"
+                },
+                {
+                    "ja": "25推奨"
+                }
+            ]
+        },
+        {
+            "textId": "DISTANCE",
+            "languageTextList": [
+                {
+                    "fr": "DISTANCE"
+                },
+                {
+                    "ar": "مسافة"
+                },
+                {
+                    "ja": "距離"
+                }
+            ]
+        },
+        {
+            "textId": "TIME",
+            "languageTextList": [
+                {
+                    "fr": "TEMPS"
+                },
+                {
+                    "ar": "زمن"
+                },
+                {
+                    "ja": "時間"
+                }
+            ]
+        },
+        {
+            "textId": "PRICE",
+            "languageTextList": [
+                {
+                    "fr": "PRIX"
+                },
+                {
+                    "ar": "السعر"
+                },
+                {
+                    "ja": "価格"
+                }
+            ]
+        },
+        {
+            "textId": "0.2 km",
+            "languageTextList": [
+                {
+                    "fr": "0,2 km"
+                },
+                {
+                    "ar": "0.2 كم"
+                },
+                {
+                    "ja": "0.2 km"
+                }
+            ]
+        },
+        {
+            "textId": "Booking Succsessful",
+            "languageTextList": [
+                {
+                    "fr": "Réservation réussie"
+                },
+                {
+                    "ar": "الحجز الناجح"
+                },
+                {
+                    "ja": "予約成功"
+                }
+            ]
+        },
+        {
+            "textId": "Your booking has been confirmed. Driver will pickup you in 2 minutes.",
+            "languageTextList": [
+                {
+                    "fr": "Votre réservation a été confirmée. Le chauffeur viendra vous chercher en 2 minutes."
+                },
+                {
+                    "ar": "تم تأكيد الحجز الخاص بك. سوف سائق التقاط لك في 2 دقيقة."
+                },
+                {
+                    "ja": "予約が確認されました。ドライバーが2分以内に送迎します。"
+                }
+            ]
+        },
+        {
+            "textId": "Cancel",
+            "languageTextList": [
+                {
+                    "fr": "Annuler"
+                },
+                {
+                    "ar": "إلغاء"
+                },
+                {
+                    "ja": "キャンセル"
+                }
+            ]
+        },
+        {
+            "textId": "Done",
+            "languageTextList": [
+                {
+                    "fr": "Terminé"
+                },
+                {
+                    "ar": "منجز"
+                },
+                {
+                    "ja": "完了"
+                }
+            ]
+        },
+        {
+            "textId": "Cancel Request",
+            "languageTextList": [
+                {
+                    "fr": "Demande d'annulation"
+                },
+                {
+                    "ar": "إلغاء الطلب"
+                },
+                {
+                    "ja": "リクエストをキャンセル"
+                }
+            ]
+        },
+        {
+            "textId": "Share Your Invite Code",
+            "languageTextList": [
+                {
+                    "fr": "Partagez votre code d'invitation"
+                },
+                {
+                    "ar": "مشاركة رمز الدعوة الخاص بك"
+                },
+                {
+                    "ja": "招待コードを共有する"
+                }
+            ]
+        },
+        {
+            "textId": "When your friend sign up with your referral code, you will both get 3.0 coupons",
+            "languageTextList": [
+                {
+                    "fr": "Lorsque votre ami s'inscrit avec votre code de parrainage, vous recevrez tous les deux 3.0 coupons"
+                },
+                {
+                    "ar": "عندما يشترك صديقك برمز الإحالة الخاص بك ، ستحصل على 3.0 كوبون"
+                },
+                {
+                    "ja": "友人が紹介コードでサインアップすると、両方とも3.0クーポンがもらえます"
+                }
+            ]
+        },
+        {
+            "textId": "Invite Friends\nGet 3 Coupons each!",
+            "languageTextList": [
+                {
+                    "fr": "Invitez des amis\nObtenez 3 coupons chacun!"
+                },
+                {
+                    "ar": "قم بدعوة الأصدقاء\nاحصل على 3 كوبونات لكل!"
+                },
+                {
+                    "ja": "友達を招待\nそれぞれ3枚のクーポンをゲット！"
+                }
+            ]
+        },
+        {
+            "textId": "Nellie Scott",
+            "languageTextList": [
+                {
+                    "fr": "Nellie Scott"
+                },
+                {
+                    "ar": "نيلي سكوت"
+                },
+                {
+                    "ja": "ネリー・スコット"
+                }
+            ]
+        },
+        {
+            "textId": "Trevor Salazar",
+            "languageTextList": [
+                {
+                    "fr": "Trevor Salazar"
+                },
+                {
+                    "ar": "تريفور سالازار"
+                },
+                {
+                    "ja": "トレバー・サラザール"
+                }
+            ]
+        },
+        {
+            "textId": "Chester Jennings",
+            "languageTextList": [
+                {
+                    "fr": "Chester Jennings"
+                },
+                {
+                    "ar": "تشيستر جينينغز"
+                },
+                {
+                    "ja": "チェスター・ジェニングス"
+                }
+            ]
+        },
+        {
+            "textId": "Sophie Bell",
+            "languageTextList": [
+                {
+                    "fr": "Sophie Bell"
+                },
+                {
+                    "ar": "صوفي بيل"
+                },
+                {
+                    "ja": "ソフィー・ベル"
+                }
+            ]
+        },
+        {
+            "textId": "Shane Morales",
+            "languageTextList": [
+                {
+                    "fr": "Shane Morales"
+                },
+                {
+                    "ar": "شين موراليس"
+                },
+                {
+                    "ja": "シェーン・モラレス"
+                }
+            ]
+        },
+        {
+            "textId": "Rhoda Palmer",
+            "languageTextList": [
+                {
+                    "fr": "Rhoda Palmer"
+                },
+                {
+                    "ar": "رودا بالمر"
+                },
+                {
+                    "ja": "ローダ・パーマー"
+                }
+            ]
+        },
+        {
+            "textId": "Nellie Scott",
+            "languageTextList": [
+                {
+                    "fr": "Nellie Scott"
+                },
+                {
+                    "ar": "نيلي سكوت"
+                },
+                {
+                    "ja": "ネリー・スコット"
+                }
+            ]
+        },
+        {
+            "textId": "Samuel Hammond",
+            "languageTextList": [
+                {
+                    "fr": "Samuel Hammond"
+                },
+                {
+                    "ar": "صموئيل هاموند"
+                },
+                {
+                    "ja": "サミュエル・ハモンド"
+                }
+            ]
+        },
+        {
+            "textId": "Esther Berry",
+            "languageTextList": [
+                {
+                    "fr": "Esther Berry"
+                },
+                {
+                    "ar": "استير بيري"
+                },
+                {
+                    "ja": "エスター・ベリー"
+                }
+            ]
+        },
+        {
+            "textId": "Search",
+            "languageTextList": [
+                {
+                    "fr": "Chercher"
+                },
+                {
+                    "ar": "بحث"
+                },
+                {
+                    "ja": "探す"
+                }
+            ]
+        },
+        {
+            "textId": "Invite friends-GEt 3 coupens each!",
+            "languageTextList": [
+                {
+                    "fr": "Invitez des amis-GEt 3 coupons chacun!"
+                },
+                {
+                    "ar": "قم بدعوة أصدقاء- GEt 3 كوبن"
+                },
+                {
+                    "ja": "友だちを招待-GEt 3クーペ"
+                }
+            ]
+        },
+        {
+            "textId": "Promotion",
+            "languageTextList": [
+                {
+                    "fr": "Promotion"
+                },
+                {
+                    "ar": "ترقية وظيفية"
+                },
+                {
+                    "ja": "昇進"
+                }
+            ]
+        },
+        {
+            "textId": "Thank you Your transaction is done",
+            "languageTextList": [
+                {
+                    "fr": "Merci Votre transaction est terminée"
+                },
+                {
+                    "ar": "شكرا تتم معاملتك"
+                },
+                {
+                    "ja": "ありがとう取引は完了しました"
+                }
+            ]
+        },
+        {
+            "textId": "System",
+            "languageTextList": [
+                {
+                    "fr": "Système"
+                },
+                {
+                    "ar": "النظام"
+                },
+                {
+                    "ja": "システム"
+                }
+            ]
+        },
+        {
+            "textId": "Booking #156 has been cancelled.",
+            "languageTextList": [
+                {
+                    "fr": "La réservation # 156 a été annulée."
+                },
+                {
+                    "ar": "تم إلغاء الحجز رقم 156."
+                },
+                {
+                    "ja": "予約＃156はキャンセルされました。"
+                }
+            ]
+        },
+        {
+            "textId": "Booking #1234 has been succsess.",
+            "languageTextList": [
+                {
+                    "fr": "La réservation # 1234 a été un succès."
+                },
+                {
+                    "ar": "تم الحجز رقم 1234 بنجاح."
+                },
+                {
+                    "ja": "予約＃1234は成功しました。"
+                }
+            ]
+        },
+        {
+            "textId": "Notifications",
+            "languageTextList": [
+                {
+                    "fr": "Notifications"
+                },
+                {
+                    "ar": "إشعارات"
+                },
+                {
+                    "ja": "通知"
+                }
+            ]
+        },
+        {
+            "textId": "Submit Review",
+            "languageTextList": [
+                {
+                    "fr": "Poster le commentaire"
+                },
+                {
+                    "ar": "إرسال المراجعة"
+                },
+                {
+                    "ja": "レビュー送信"
+                }
+            ]
+        },
+        {
+            "textId": "Additional comments...",
+            "languageTextList": [
+                {
+                    "fr": "Commentaires supplémentaires ..."
+                },
+                {
+                    "ar": "تعليقات اضافية..."
+                },
+                {
+                    "ja": "追加コメント..."
+                }
+            ]
+        },
+        {
+            "textId": "Your feedback will help improve\ndriving experience",
+            "languageTextList": [
+                {
+                    "fr": "Vos commentaires contribueront à améliorer\nl'expérience de conduite"
+                },
+                {
+                    "ar": "ستساعد ملاحظاتك في تحسين\nتجربة القيادة"
+                },
+                {
+                    "ja": "あなたのフィードバックは\n運転経験の改善に役立ちます"
+                }
+            ]
+        },
+        {
+            "textId": "How is your trip?",
+            "languageTextList": [
+                {
+                    "fr": "Comment se passe ton voyage?"
+                },
+                {
+                    "ar": "كيف حال رحلتك"
+                },
+                {
+                    "ja": "旅行はどうですか？"
+                }
+            ]
+        },
+        {
+            "textId": "Gregory Smith",
+            "languageTextList": [
+                {
+                    "fr": "Gregory Smith"
+                },
+                {
+                    "ar": "غريغوري سميث"
+                },
+                {
+                    "ja": "グレゴリー・スミス"
+                }
+            ]
+        },
+        {
+            "textId": "Rating",
+            "languageTextList": [
+                {
+                    "fr": "Évaluation"
+                },
+                {
+                    "ar": "تقييم"
+                },
+                {
+                    "ja": "格付け"
+                }
+            ]
+        },
+        {
+            "textId": "Tips",
+            "languageTextList": [
+                {
+                    "fr": "Conseils"
+                },
+                {
+                    "ar": "نصائح"
+                },
+                {
+                    "ja": "チップ"
+                }
+            ]
+        },
+        {
+            "textId": "Wow! A 5 Star !\nWanna add tip for Gregory?",
+            "languageTextList": [
+                {
+                    "fr": "Hou la la! Un 5 étoiles!\nVous voulez ajouter un conseil à Gregory?"
+                },
+                {
+                    "ar": "رائع! A 5 Star!\nهل تريد إضافة معلومات عن Gregory؟"
+                },
+                {
+                    "ja": "うわー！ 5つ星！\nグレゴリーのヒントを追加したいですか？"
+                }
+            ]
+        },
+        {
+            "textId": "Choose other amount",
+            "languageTextList": [
+                {
+                    "fr": "Choisissez un autre montant"
+                },
+                {
+                    "ar": "اختيار المبلغ الآخر"
+                },
+                {
+                    "ja": "他の金額を選択してください"
+                }
+            ]
+        },
+        {
+            "textId": "Maybe next time",
+            "languageTextList": [
+                {
+                    "fr": "Peut-être la prochaine fois"
+                },
+                {
+                    "ar": "ربما في المرة القادمة"
+                },
+                {
+                    "ja": "他の金額を選択してください"
+                }
+            ]
+        },
+        {
+            "textId": "My Account",
+            "languageTextList": [
+                {
+                    "fr": "Mon compte"
+                },
+                {
+                    "ar": "حسابي"
+                },
+                {
+                    "ja": "マイアカウント"
+                }
+            ]
+        },
+        {
+            "textId": "Level",
+            "languageTextList": [
+                {
+                    "fr": "Niveau"
+                },
+                {
+                    "ar": "مستوى"
+                },
+                {
+                    "ja": "レベル"
+                }
+            ]
+        },
+        {
+            "textId": "Gold member",
+            "languageTextList": [
+                {
+                    "fr": "Membre Gold"
+                },
+                {
+                    "ar": "عضو ذهبي"
+                },
+                {
+                    "ja": "ゴールド会員"
+                }
+            ]
+        },
+        {
+            "textId": "Name",
+            "languageTextList": [
+                {
+                    "fr": "Nom"
+                },
+                {
+                    "ar": "اسم"
+                },
+                {
+                    "ja": "名前"
+                }
+            ]
+        },
+        {
+            "textId": "Email",
+            "languageTextList": [
+                {
+                    "fr": "Email"
+                },
+                {
+                    "ar": "البريد الإلكتروني"
+                },
+                {
+                    "ja": "Eメール"
+                }
+            ]
+        },
+        {
+            "textId": "Gender",
+            "languageTextList": [
+                {
+                    "fr": "Le sexe"
+                },
+                {
+                    "ar": "جنس"
+                },
+                {
+                    "ja": "性別"
+                }
+            ]
+        },
+        {
+            "textId": "Female",
+            "languageTextList": [
+                {
+                    "fr": "Femme"
+                },
+                {
+                    "ar": "أنثى"
+                },
+                {
+                    "ja": "女性"
+                }
+            ]
+        },
+        {
+            "textId": "Birthday",
+            "languageTextList": [
+                {
+                    "fr": "Anniversaire"
+                },
+                {
+                    "ar": "عيد الميلاد"
+                },
+                {
+                    "ja": "お誕生日"
+                }
+            ]
+        },
+        {
+            "textId": "April 16, 1988",
+            "languageTextList": [
+                {
+                    "fr": "16 avril 1988"
+                },
+                {
+                    "ar": "16 أبريل 1988"
+                },
+                {
+                    "ja": "1988年4月16日"
+                }
+            ]
+        },
+        {
+            "textId": "Dark",
+            "languageTextList": [
+                {
+                    "fr": "Foncée"
+                },
+                {
+                    "ar": "داكن"
+                },
+                {
+                    "ja": "暗いです"
+                }
+            ]
+        },
+        {
+            "textId": "Light",
+            "languageTextList": [
+                {
+                    "fr": "Lumière"
+                },
+                {
+                    "ar": "ضوء"
+                },
+                {
+                    "ja": "光"
+                }
+            ]
+        },
+        {
+            "textId": "Select theme mode",
+            "languageTextList": [
+                {
+                    "fr": "Sélectionnez le mode thème"
+                },
+                {
+                    "ar": "حدد وضع السمة"
+                },
+                {
+                    "ja": "テーマモードを選択"
+                }
+            ]
+        },
+        {
+            "textId": "Theme Mode",
+            "languageTextList": [
+                {
+                    "ja": "テーマモード"
+                },
+                {
+                    "fr": "Mode Thème"
+                },
+                {
+                    "ar": "وضع الموضوع"
+                }
+            ]
+        },
+        {
+            "textId": "Language",
+            "languageTextList": [
+                {
+                    "fr": "LANGUE"
+                },
+                {
+                    "ar": "لغة"
+                },
+                {
+                    "ja": "言語"
+                }
+            ]
+        },
+        {
+            "textId": "Security",
+            "languageTextList": [
+                {
+                    "fr": "Sécurité"
+                },
+                {
+                    "ar": "الأمان"
+                },
+                {
+                    "ja": "セキュリティ"
+                }
+            ]
+        },
+        {
+            "textId": "Contact us",
+            "languageTextList": [
+                {
+                    "fr": "Nous contacter"
+                },
+                {
+                    "ar": "اتصل بنا"
+                },
+                {
+                    "ja": "お問い合わせ"
+                }
+            ]
+        },
+        {
+            "textId": "Terms & Prvacy Policy",
+            "languageTextList": [
+                {
+                    "fr": "Conditions et politique de confidentialité"
+                },
+                {
+                    "ar": "الشروط والسياسة Prvacy"
+                },
+                {
+                    "ja": "利用規約とプライバシーポリシー"
+                }
+            ]
+        },
+        {
+            "textId": "Clear cache",
+            "languageTextList": [
+                {
+                    "fr": "Vider le cache"
+                },
+                {
+                    "ar": "مسح ذاكرة التخزين المؤقت"
+                },
+                {
+                    "ja": "キャッシュの消去"
+                }
+            ]
+        },
+        {
+            "textId": "Select Language",
+            "languageTextList": [
+                {
+                    "fr": "Choisir la langue"
+                },
+                {
+                    "ar": "اختار اللغة"
+                },
+                {
+                    "ja": "言語を選択する"
+                }
+            ]
+        },
+        {
+            "textId": "Settings",
+            "languageTextList": [
+                {
+                    "fr": "Réglages"
+                },
+                {
+                    "ar": "الإعدادات"
+                },
+                {
+                    "ja": "設定"
+                }
+            ]
+        },
+        {
+            "textId": "Get Started!",
+            "languageTextList": [
+                {
+                    "fr": "Commencer!"
+                },
+                {
+                    "ar": "البدء!"
+                },
+                {
+                    "ja": "始めましょう！"
+                }
+            ]
+        },
+        {
+            "textId": "Know your driver in advance and be\nable to view current location in real-time\non the map",
+            "languageTextList": [
+                {
+                    "fr": "Connaissez votre chauffeur à l'avance et soyez\npossibilité d'afficher l'emplacement actuel en temps réel\n sur la carte"
+                },
+                {
+                    "ar": "تعرف سائقك مقدما ويكون\nقادر على عرض الموقع الحالي في الوقت الحقيقي\nعلى الخريطة"
+                },
+                {
+                    "ja": "事前にドライバーを把握し\n地図上でリアルタイムで現在地を\n表示できるようにします"
+                }
+            ]
+        },
+        {
+            "textId": "Track your ride",
+            "languageTextList": [
+                {
+                    "fr": "Suivez votre trajet"
+                },
+                {
+                    "ar": "تتبع رحلتك"
+                },
+                {
+                    "ja": "ライドを追跡"
+                }
+            ]
+        },
+        {
+            "textId": "Request a ride gets picked up by a\nnearby community driver",
+            "languageTextList": [
+                {
+                    "fr": "Demander un trajet est récupéré par un\nconducteur de la communauté à proximité"
+                },
+                {
+                    "ar": "طلب الحصول على ركوب من قبل\nسائق مجتمع قريب"
+                },
+                {
+                    "ja": "乗車をリクエストする\n近くのコミュニティドライバー"
+                }
+            ]
+        },
+        {
+            "textId": "Request Ride",
+            "languageTextList": [
+                {
+                    "fr": "Demander un tour"
+                },
+                {
+                    "ar": "طلب ركوب"
+                },
+                {
+                    "ja": "ライドリクエスト"
+                }
+            ]
+        },
+        {
+            "textId": "Huge drivers network helps you find a\ncomfortable and cheap ride",
+            "languageTextList": [
+                {
+                    "fr": "Un énorme réseau de conducteurs vous aide à\ntrouver un trajet confortable et bon marché"
+                },
+                {
+                    "ar": "تساعدك شبكة برامج التشغيل الضخمة على العثور على\nرحلة مريحة ورخيصة"
+                },
+                {
+                    "ja": "巨大なドライバーネットワークがあなたの発見を助けます\n快適で安い乗り心地"
+                }
+            ]
+        },
+        {
+            "textId": "Confirm your Driver",
+            "languageTextList": [
+                {
+                    "fr": "Confirmez votre chauffeur"
+                },
+                {
+                    "ar": "تأكيد سائقك"
+                },
+                {
+                    "ja": "ドライバーを確認する"
+                }
+            ]
+        },
+        {
+            "textId": "Hi, nice to meet you!",
+            "languageTextList": [
+                {
+                    "fr": "Salut! Enchanté!"
+                },
+                {
+                    "ar": "مرحبا، انا سعيد لرؤيتك!"
+                },
+                {
+                    "ja": "こんにちは、はじめまして！"
+                }
+            ]
+        },
+        {
+            "textId": "Choose your location to start to find\nrestaurants around you.",
+            "languageTextList": [
+                {
+                    "fr": "Choisissez votre emplacement pour commencer à trouver des\nrestaurants autour de vous."
+                },
+                {
+                    "ar": "اختر موقعك للبدء في العثور على\nالمطاعم من حولك."
+                },
+                {
+                    "ja": "探し始める場所を選択してください\nあなたの周りのレストラン。"
+                }
+            ]
+        },
+        {
+            "textId": "Use current location",
+            "languageTextList": [
+                {
+                    "fr": "Utiliser l'emplacement actuel"
+                },
+                {
+                    "ar": "استخدام الموقع الحالي"
+                },
+                {
+                    "ja": "現在地を使用"
+                }
+            ]
+        },
+        {
+            "textId": "My Cab",
+            "languageTextList": [
+                {
+                    "fr": "My Cab"
+                },
+                {
+                    "ar": "بلدي الكابينة"
+                },
+                {
+                    "ja": "私のタクシー"
+                }
+            ]
+        },
+        {
+            "textId": "Your booking has been confirmed. Driver will pickup you in 2 minutes.",
+            "languageTextList": [
+                {
+                    "fr": "Votre réservation a été confirmée. Le chauffeur viendra vous chercher en 2 minutes."
+                },
+                {
+                    "ar": "تم تأكيد الحجز الخاص بك. سوف سائق التقاط لك في 2 دقيقة."
+                },
+                {
+                    "ja": "予約が確認されました。ドライバーが2分以内に送迎します。"
+                }
+            ]
+        },
+        {
+            "textId": "Booking Succsessful",
+            "languageTextList": [
+                {
+                    "fr": "Réservation réussie"
+                },
+                {
+                    "ar": "الحجز الناجح"
+                },
+                {
+                    "ja": "予約成功"
+                }
+            ]
+        },
+        {
+            "textId": "PRICE",
+            "languageTextList": [
+                {
+                    "fr": "PRIX"
+                },
+                {
+                    "ar": "السعر"
+                },
+                {
+                    "ja": "価格"
+                }
+            ]
+        },
+        {
+            "textId": "Integral Mall",
+            "languageTextList": [
+                {
+                    "fr": "Integral Mall"
+                },
+                {
+                    "ar": "لا يتجزأ مول"
+                },
+                {
+                    "ja": "インテグラルモール"
+                }
+            ]
+        },
+        {
+            "textId": "Coupon",
+            "languageTextList": [
+                {
+                    "fr": "Coupon"
+                },
+                {
+                    "ar": "كوبون"
+                },
+                {
+                    "ja": "クーポン"
+                }
+            ]
+        },
+        {
+            "textId": "Payment Methods",
+            "languageTextList": [
+                {
+                    "fr": "méthodes de payement"
+                },
+                {
+                    "ar": "طرق الدفع"
+                },
+                {
+                    "ja": "お支払い方法"
+                }
+            ]
+        },
+        {
+            "textId": "EXPIRES",
+            "languageTextList": [
+                {
+                    "fr": "EXPIRE"
+                },
+                {
+                    "ar": "تنقضي"
+                },
+                {
+                    "ja": "期限切れ"
+                }
+            ]
+        },
+        {
+            "textId": "BALANCE",
+            "languageTextList": [
+                {
+                    "fr": "ÉQUILIBRE"
+                },
+                {
+                    "ar": "توازن"
+                },
+                {
+                    "ja": "残高"
+                }
+            ]
+        },
+        {
+            "textId": "Default Payment Method",
+            "languageTextList": [
+                {
+                    "fr": "Méthode de paiement par défaut"
+                },
+                {
+                    "ar": "طريقه تسديد خاطئه"
+                },
+                {
+                    "ja": "デフォルトの支払い方法"
+                }
+            ]
+        },
+        {
+            "textId": "Add New Method",
+            "languageTextList": [
+                {
+                    "fr": "Ajouter une nouvelle méthode"
+                },
+                {
+                    "ar": "إضافة طريقة جديدة"
+                },
+                {
+                    "ja": "新しいメソッドを追加"
+                }
+            ]
+        },
+        {
+            "textId": "CREDIT CARD",
+            "languageTextList": [
+                {
+                    "fr": "CARTE DE CRÉDIT"
+                },
+                {
+                    "ar": "بطاقة الائتمان"
+                },
+                {
+                    "ja": "クレジットカード"
+                }
+            ]
+        },
+        {
+            "textId": "Payment Method",
+            "languageTextList": [
+                {
+                    "fr": "Mode de paiement"
+                },
+                {
+                    "ar": "طريقة الدفع او السداد"
+                },
+                {
+                    "ja": "支払方法"
+                }
+            ]
+        }
+    ]
+}
