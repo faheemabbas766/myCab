@@ -2,22 +2,22 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:my_cab/Language/appLocalizations.dart';
 import 'package:my_cab/constance/constance.dart';
 import 'package:my_cab/constance/themes.dart';
-import 'package:my_cab/main.dart';
 import 'package:my_cab/constance/global.dart' as globals;
 import 'package:my_cab/modules/drawer/drawer.dart';
 import 'package:my_cab/modules/home/MapPinSelectionView.dart';
 import 'package:my_cab/modules/home/addressSelctionView.dart';
 import 'package:my_cab/modules/home/requset_view.dart';
 import 'package:provider/provider.dart';
-
 import '../../providers/mappro.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+  const HomeScreen({Key? key}) : super(key: key);
+
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
@@ -26,7 +26,6 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
   late AnimationController animationController;
 
   late GoogleMapController _mapController;
-  LatLng _londonLatLong = LatLng(51.505939, -0.088727);
   final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   bool isSerchMode = false;
@@ -42,7 +41,6 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
   List<LatLng> carPointOne = [], carPointTwo = [], carPointThree = [], carPointFour = [], carPointFive = [];
 
   void setMakerPinSize(BuildContext context) async {
-    // if (currentcontext == null) {
     currentcontext = context;
     final ImageConfiguration imagesStartConfiguration = createLocalImageConfiguration(currentcontext);
     carMapBitmapDescriptor = await BitmapDescriptor.fromAssetImage(imagesStartConfiguration, ConstanceData.mapCar);
@@ -50,7 +48,6 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
     startMapBitmapDescriptor = await BitmapDescriptor.fromAssetImage(startStartConfiguration, ConstanceData.startmapPin);
     final ImageConfiguration endStartConfiguration = createLocalImageConfiguration(currentcontext);
     endMapBitmapDescriptor = await BitmapDescriptor.fromAssetImage(endStartConfiguration, ConstanceData.endmapPin);
-    // }
 
     setState(() {});
   }
@@ -72,7 +69,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
     carPointTwo = ConstanceData.getCarTwoPolyLineList();
     carPointThree = ConstanceData.getCarThreePolyLineList();
     carPointFour = ConstanceData.getCarFourPolyLineList();
-    _londonLatLong = LatLng(Provider.of<MapPro>(context, listen: false).plat, Provider.of<MapPro>(context, listen: false).plong);
+    Provider.of<MapPro>(context,listen: false).londonLatLong = LatLng(Provider.of<MapPro>(context, listen: false).plat, Provider.of<MapPro>(context, listen: false).plong);
     Provider.of<MapPro>(context, listen: false).poliList = await ConstanceData.getRoutePolyLineList(context);
     Timer(Duration(milliseconds: next(1200, 4000)), carOnePin);
     Timer(Duration(milliseconds: next(1200, 4000)), carTwoPin);
@@ -149,20 +146,20 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
     }
 
     if (prosseType == ProsseType.requset) {
-      final MarkerId markerId2 = MarkerId('start');
+      final MarkerId markerId2 = const MarkerId('start');
       final Marker marker2 = Marker(
         markerId: markerId2,
         position: Provider.of<MapPro>(context, listen: false).poliList.first,
-        anchor: Offset(0.5, 0.5),
+        anchor: const Offset(0.5, 0.5),
         icon: startMapBitmapDescriptor,
       );
       markers.addAll({markerId2: marker2});
 
-      final MarkerId markerId = MarkerId('end');
+      const MarkerId markerId = MarkerId('end');
       final Marker marker = Marker(
         markerId: markerId,
         position: Provider.of<MapPro>(context, listen: false).poliList.last,
-        anchor: Offset(0.5, 1.0),
+        anchor: const Offset(0.5, 1.0),
         icon: endMapBitmapDescriptor,
       );
       markers.addAll({markerId: marker});
@@ -185,6 +182,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
         endCap: Cap.roundCap,
       );
       polylines.addAll({polylineId: polyline});
+      _addPolylineToMap();
     }
     return polylines;
   }
@@ -192,127 +190,152 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
   @override
   Widget build(BuildContext context) {
     setMakerPinSize(context);
-
-    return Scaffold(
-      key: _scaffoldKey,
-      drawer: SizedBox(
-        width: MediaQuery.of(context).size.width * 0.75 < 400 ? MediaQuery.of(context).size.width * 0.72 : 350,
-        child: const Drawer(
-          child: AppDrawer(
-            selectItemName: 'Home',
-          ),
-        ),
-      ),
-      body: Stack(
-        children: <Widget>[
-          Positioned(
-            top: 0,
-            left: 0,
-            right: 0,
-            height: MediaQuery.of(context).size.height,
-            child: GoogleMap(
-              initialCameraPosition: CameraPosition(
-                target: _londonLatLong,
-                tilt: 30.0,
-                zoom: 16,
+    return Consumer<MapPro>(
+        builder: (context, mapPro, _) {
+          LatLng londonLatLong = mapPro.londonLatLong;
+          return Scaffold(
+            key: _scaffoldKey,
+            drawer: SizedBox(
+              width: MediaQuery.of(context).size.width * 0.75 < 400 ? MediaQuery.of(context).size.width * 0.72 : 350,
+              child: const Drawer(
+                child: AppDrawer(
+                  selectItemName: 'Home',
+                ),
               ),
-              onCameraMoveStarted: () {},
-              markers: Set<Marker>.of(getMarkerList(context).values),
-              onCameraMove: (CameraPosition position) {},
-              polylines: Set<Polyline>.of(getPolilineData().values),
-              onCameraIdle: () {},
-              onMapCreated: (GoogleMapController controller) async {
-                _mapController = controller;
-                setMapStyle();
-              },
-
             ),
-          ),
-          prosseType != ProsseType.mapPin && prosseType != ProsseType.requset ? _getAppBarUI() : const SizedBox(),
-          prosseType == ProsseType.dropOff
-              ? AddressSectionView(
-            animationController: animationController,
-            isSerchMode: isSerchMode,
-            isUp: isUp,
-            mapCallBack: () {
-              animationController.animateTo(1, duration: const Duration(milliseconds: 480)).then((f) {
-                setState(() {
-                  prosseType = ProsseType.mapPin;
-                });
-              });
-            },
-            onSerchMode: (onSerchMode) {
-              if (isSerchMode != onSerchMode) {
-                setState(() {
-                  isSerchMode = onSerchMode;
-                });
-              }
-            },
-            onUp: (onUp) {
-              if (isUp != onUp) {
-                setState(() {
-                  isUp = onUp;
-                });
-              }
-            },
-            serachController: serachController,
-            gpsClick: () async {
-              Provider.of<MapPro>(context, listen: false).poliList = await ConstanceData.getRoutePolyLineList(context);
-              _londonLatLong =LatLng(Provider.of<MapPro>(context, listen: false).plat, Provider.of<MapPro>(context, listen: false).plong);
-              getPolilineData();
-              _mapController.animateCamera(
-                CameraUpdate.newCameraPosition(
-                  CameraPosition(
-                    target: _londonLatLong,
-                    zoom: 16.0,
-                    tilt: 24.0,
+            body: Stack(
+              children: <Widget>[
+                Positioned(
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  height: MediaQuery.of(context).size.height,
+                  child: GoogleMap(
+                    initialCameraPosition: CameraPosition(
+                      target: londonLatLong,
+                      tilt: 30.0,
+                      zoom: 16,
+                    ),
+                    onCameraMoveStarted: () {},
+                    mapType: MapType.normal,
+                    markers: Set<Marker>.of(getMarkerList(context).values),
+                    onCameraMove: (CameraPosition position) {},
+                    polylines: Set<Polyline>.of(getPolilineData().values),
+                    onCameraIdle: () {},
+                    compassEnabled: false,
+                    myLocationButtonEnabled: false,
+                    rotateGesturesEnabled: false,
+                    tiltGesturesEnabled: false,
+                    myLocationEnabled: false,
+                    buildingsEnabled: false,
+                    onMapCreated: (GoogleMapController controller) async {
+                      _mapController = controller;
+                      setMapStyle();
+                    },
                   ),
                 ),
-              );
-                          MyApp.changeTheme(context);
-              setMapStyle();
-            },
-          )
-              : prosseType == ProsseType.mapPin
-              ? MapPinSelectionView(
-            barText: AppLocalizations.of('Choose a pickup point'),
-            onBackClick: () {
-              setState(() {
-                prosseType = ProsseType.dropOff;
-              });
-            },
-            gpsClick: () {
-              _londonLatLong = LatLng(Provider.of<MapPro>(context, listen: false).plat, Provider.of<MapPro>(context, listen: false).plong);
-
-              _mapController.animateCamera(
-                CameraUpdate.newCameraPosition(
-                  CameraPosition(
-                    target: _londonLatLong,
-                    zoom: 16.0,
-                    tilt: 24.0,
+                prosseType != ProsseType.mapPin &&
+                    prosseType != ProsseType.requset
+                    ? _getAppBarUI()
+                    : const SizedBox(),
+                prosseType == ProsseType.dropOff
+                    ? Padding(
+                  padding: const EdgeInsets.only(top: 50.0),
+                  child: AddressSectionView(
+                    callback: () {
+                      setState(() {
+                        prosseType = ProsseType.requset;
+                      });
+                    },
+                    animationController: animationController,
+                    isSearchMode: isSerchMode,
+                    isUp: isUp,
+                    mapCallBack: () {
+                      animationController.animateTo(
+                          1, duration: const Duration(milliseconds: 480)).then((
+                          f) {
+                        setState(() {
+                          prosseType = ProsseType.mapPin;
+                        });
+                      });
+                    },
+                    onSearchMode: (onSearchMode) {
+                      if (isSerchMode != onSearchMode) {
+                        setState(() {
+                          isSerchMode = onSearchMode;
+                        });
+                      }
+                    },
+                    onUp: (onUp) {
+                      if (isUp != onUp) {
+                        setState(() {
+                          isUp = onUp;
+                        });
+                      }
+                    },
+                    searchController: serachController,
+                    gpsClick: () async {
+                      ConstanceData.handleLocationPermission(context);
+                      _mapController.animateCamera(
+                        CameraUpdate.newCameraPosition(
+                          CameraPosition(
+                            target: londonLatLong,
+                            zoom: 15.0,
+                            tilt: 24.0,
+                          ),
+                        ),
+                      );
+                      // MyApp.changeTheme(context);
+                      setMapStyle();
+                    },
                   ),
-                ),
-              );
-              //here i want to setstate map or refresh the map
-              MyApp.changeTheme(context);
-              setMapStyle();
-            },
-            callback: () {
-              setState(() {
-                prosseType = ProsseType.requset;
-              });
-            },
-          )
-              : RequsetView(
-            onBack: () {
-              setState(() {
-                prosseType = ProsseType.dropOff;
-              });
-            },
-          )
-        ],
-      ),
-    );
+                )
+                    : prosseType == ProsseType.mapPin
+                    ? MapPinSelectionView(
+                  mapController: _mapController,
+                  barText: AppLocalizations.of('Choose a point'),
+                  onBackClick: () {
+                    setState(() {
+                      prosseType = ProsseType.dropOff;
+                    });
+                  },
+                  gpsClick: () async {
+                    await ConstanceData.handleLocationPermission(context);
+                    var pos = await Geolocator.getCurrentPosition();
+                    print("Latitude  is : ${pos.latitude}");
+                    print("Longitude is : ${pos.longitude}");
+                    Provider
+                        .of<MapPro>(context, listen: false)
+                        .londonLatLong = LatLng(pos.latitude, pos.longitude);
+                    _mapController.animateCamera(
+                      CameraUpdate.newCameraPosition(
+                        CameraPosition(
+                          target: londonLatLong,
+                          zoom: 16.0,
+                          tilt: 24.0,
+                        ),
+                      ),
+                    );
+                    // MyApp.changeTheme(context);
+                    setMapStyle();
+                  },
+                  callback: () {
+                    setState(() {
+                      prosseType = ProsseType.requset;
+                    });
+                  },
+                )
+                    : RequestView(
+                  onBack: () {
+                    setState(() {
+                      prosseType = ProsseType.dropOff;
+                    });
+                  },
+                )
+              ],
+            ),
+          );
+        });
   }
 
   Widget _getAppBarUI() {
@@ -361,6 +384,28 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
     } else {
       _mapController.setMapStyle(await DefaultAssetBundle.of(context).loadString("assets/jsonFile/dark_mapstyle.json"));
     }
+  }
+  LatLngBounds calculateBounds(List<LatLng> points) {
+    double minLat = double.infinity;
+    double maxLat = -double.infinity;
+    double minLng = double.infinity;
+    double maxLng = -double.infinity;
+
+    for (LatLng point in points) {
+      if (point.latitude < minLat) minLat = point.latitude;
+      if (point.latitude > maxLat) maxLat = point.latitude;
+      if (point.longitude < minLng) minLng = point.longitude;
+      if (point.longitude > maxLng) maxLng = point.longitude;
+    }
+
+    return LatLngBounds(
+      southwest: LatLng(minLat, minLng),
+      northeast: LatLng(maxLat, maxLng),
+    );
+  }
+  void _addPolylineToMap() {
+    LatLngBounds bounds = calculateBounds(Provider.of<MapPro>(context,listen: false).poliList);
+    _mapController.animateCamera(CameraUpdate.newLatLngBounds(bounds, 50)); // 50 is padding
   }
 }
 

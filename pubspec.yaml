@@ -9,6 +9,7 @@ dependencies:
   flutter_localizations:
     sdk: flutter
 
+  # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.5
   google_fonts: ^4.0.5
   smooth_page_indicator: ^1.1.0
@@ -24,6 +25,7 @@ dependencies:
   flutter_local_notifications: ^16.1.0
   flutter_ringtone_player: ^4.0.0+2
   http: ^1.1.0
+  intl: any
   flutter_polyline_points: ^2.0.0
 
 dev_dependencies:

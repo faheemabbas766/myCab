@@ -7,7 +7,10 @@ import 'package:my_cab/constance/global.dart' as globals;
 import 'package:my_cab/constance/routes.dart';
 import 'package:my_cab/constance/themes.dart';
 import 'package:my_cab/constance/constance.dart' as constance;
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../providers/homepro.dart';
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -33,6 +36,10 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
     SharedPreferences prefs = await SharedPreferences.getInstance();
     if(prefs.getString('username') != null && prefs.getString('userid') != null
         && prefs.getString('token') != null){
+      Provider.of<HomePro>(context, listen: false).token = prefs.getString('token')!;
+      Provider.of<HomePro>(context, listen: false).userid = int.parse(prefs.getString('userid')!);
+      Provider.of<HomePro>(context, listen: false).username = prefs.getString('username')!;
+
       Navigator.pushReplacementNamed(context, Routes.HOME);
     }
     else

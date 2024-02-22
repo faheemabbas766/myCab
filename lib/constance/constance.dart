@@ -1,6 +1,8 @@
 import 'dart:math' as math;
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:my_cab/Language/LanguageData.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:my_cab/Language/appLocalizations.dart';
@@ -34,7 +36,7 @@ class ConstanceData {
   static final user2 = BaseImageUrl + "2.jpg";
   static final user3 = BaseImageUrl + "3.jpg";
   static final user4 = BaseImageUrl + "4.jpg";
-  static final user5 = BaseImageUrl + "5.jpg";
+  static const user5 = "${BaseImageUrl}5.jpg";
   static final user6 = BaseImageUrl + "6.jpg";
   static final user7 = BaseImageUrl + "7.jpg";
   static final user8 = BaseImageUrl + "8.jpg";
@@ -60,6 +62,35 @@ class ConstanceData {
     return math.min(360, distance / deltaDeg);
   }
 
+  static Future<bool> handleLocationPermission(BuildContext context) async {
+    bool serviceEnabled;
+    LocationPermission permission;
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text(
+              'Location services are disabled. Please enable the services')));
+      return false;
+    }
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Location permissions are denied')));
+        return false;
+      }
+    }
+    if (permission == LocationPermission.deniedForever) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text(
+              'Location permissions are permanently denied, we cannot request permissions.')));
+      return false;
+    }
+    print(':::::::::::::::::::::::::::::::Location Access gained Successfully!!!');
+    return true;
+  }
+
   static double wrapLongitude(double longitude) {
     if (longitude <= 180 && longitude >= -180) {
       return longitude;
@@ -77,31 +108,25 @@ class ConstanceData {
 
   static String getDriverToUserDistance(int distanceInMeter) {
     if (distanceInMeter < 600) {
-      return '~$distanceInMeter ' + AppLocalizations.of('meter');
+      return '~$distanceInMeter ${AppLocalizations.of('meter')}';
     } else {
-      return '~ ${(distanceInMeter / 1000).toStringAsFixed(2)} ' + AppLocalizations.of('Km');
+      return '~ ${(distanceInMeter / 1000).toStringAsFixed(2)} ${AppLocalizations.of('Km')}';
     }
   }
 
   static double getCarAngle(LatLng startPoint, LatLng lastPoint) {
-    if (startPoint != null && startPoint.latitude != null && lastPoint != null && lastPoint.latitude != null) {
-      var spoint = math.Point(startPoint.latitude, startPoint.longitude);
-      var epoint = math.Point(lastPoint.latitude, lastPoint.longitude);
-      var newpoint = math.Point(epoint.x - spoint.x, epoint.y - spoint.y);
-      double angle = -math.atan2(newpoint.x, newpoint.y);
-      var bearingDegrees = (angle * (180.0 / math.pi)) - 90; // convert to degrees
-      bearingDegrees = (bearingDegrees > 0.0 ? bearingDegrees : (360.0 + bearingDegrees));
-      return bearingDegrees;
-    } else {
-      return 0.0;
+    var spoint = math.Point(startPoint.latitude, startPoint.longitude);
+    var epoint = math.Point(lastPoint.latitude, lastPoint.longitude);
+    var newpoint = math.Point(epoint.x - spoint.x, epoint.y - spoint.y);
+    double angle = -math.atan2(newpoint.x, newpoint.y);
+    var bearingDegrees = (angle * (180.0 / math.pi)) - 90; // convert to degrees
+    bearingDegrees = (bearingDegrees > 0.0 ? bearingDegrees : (360.0 + bearingDegrees));
+    return bearingDegrees;
     }
-  }
 
   static Future<List<LatLng>> getRoutePolyLineList(BuildContext context) async {
     List<List<double>> list = [
       [51.50470714600269, -0.09019766002893448],
-      [51.50475305838213, -0.09014502167701721],
-      [51.509639957943456, -0.08035462349653244],
       [51.50973156404568, -0.08060239255428314],
     ];
     PolylinePoints polylinePoints = PolylinePoints();
@@ -722,4 +747,4 @@ String locale = "en";
 
 // AllTextData allTextData;
 
-AllTextData allTextData = new AllTextData(allText: []);
+AllTextData allTextData = AllTextData(allText: []);

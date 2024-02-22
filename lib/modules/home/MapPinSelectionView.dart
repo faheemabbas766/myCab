@@ -1,10 +1,23 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:my_cab/Language/appLocalizations.dart';
 import 'package:my_cab/constance/constance.dart';
+import 'package:http/http.dart'as http;
+import 'package:provider/provider.dart';
+
+import '../../providers/mappro.dart';
 class MapPinSelectionView extends StatefulWidget {
   final String barText;
+  final GoogleMapController mapController;
   final VoidCallback callback, gpsClick, onBackClick;
-  const MapPinSelectionView({super.key, required this.callback, required this.gpsClick, required this.barText, required this.onBackClick});
+  const MapPinSelectionView({super.key,
+    required this.mapController,
+    required this.callback,
+    required this.gpsClick,
+    required this.barText,
+    required this.onBackClick});
 
 
   @override
@@ -12,6 +25,20 @@ class MapPinSelectionView extends StatefulWidget {
 }
 
 class _MapPinSelectionViewState extends State<MapPinSelectionView> {
+  Future<String> getAddressFromLatLng(double lat, double lng) async {
+    String mapKey = 'AIzaSyD7nCnza24yu8qP2q5B0o7y0Qg54oUdNE4';
+    String host = 'https://maps.google.com/maps/api/geocode/json';
+    final url = '$host?key=$mapKey&language=en&latlng=$lat,$lng';
+    var response = await http.get(Uri.parse(url));
+    if(response.statusCode == 200) {
+      Map data = jsonDecode(response.body);
+      String formattedAddress = data["results"][0]["formatted_address"];
+      print("response ==== $formattedAddress");
+      return formattedAddress;
+    } else {
+      return "Not Found";
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -46,7 +73,7 @@ class _MapPinSelectionViewState extends State<MapPinSelectionView> {
               padding: const EdgeInsets.all(24.0),
               child: Card(
                 elevation: 8,
-                shape: RoundedRectangleBorder(
+                shape: const RoundedRectangleBorder(
                   borderRadius: BorderRadius.all(
                     Radius.circular(32),
                   ),
@@ -105,11 +132,7 @@ class _MapPinSelectionViewState extends State<MapPinSelectionView> {
                           size: MediaQuery.of(context).size.width > 340 ? 28 : 26,
                         ),
                         onPressed: () async {
-                          try {
-                            widget.gpsClick();
-                          } catch (e) {
-
-                          }
+                          widget.gpsClick();
                         },
                       ),
                     ),
@@ -127,8 +150,20 @@ class _MapPinSelectionViewState extends State<MapPinSelectionView> {
                   child: Column(
                     children: <Widget>[
                       InkWell(
-                        onTap: () {
-                          widget.callback();
+                        onTap: () async {
+                          LatLngBounds visibleRegion = await widget.mapController.getVisibleRegion();
+                          LatLng centerLatLng = LatLng(
+                            (visibleRegion.northeast.latitude + visibleRegion.southwest.latitude) / 2,
+                            (visibleRegion.northeast.longitude + visibleRegion.southwest.longitude) / 2,
+                          );
+                          print(centerLatLng.latitude);
+                          print(centerLatLng.longitude);
+                          if(Provider.of<MapPro>(context,listen:false).isPickup){
+                            Provider.of<MapPro>(context, listen: false).pickupController.text = await getAddressFromLatLng(centerLatLng.latitude, centerLatLng.longitude);
+                          }else{
+                            Provider.of<MapPro>(context, listen: false).dropController.text = await getAddressFromLatLng(centerLatLng.latitude, centerLatLng.longitude);
+                          }
+                          widget.onBackClick();
                         },
                         child: Center(
                             child: Padding(

@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:my_cab/modules/splash/SplashScreen.dart';
 import 'package:my_cab/providers/homepro.dart';
 import 'package:my_cab/providers/mappro.dart';
 import 'package:provider/provider.dart';
@@ -130,7 +131,7 @@ class _MyAppState extends State<MyApp> {
           ],
           debugShowCheckedModeBanner: false,
           title: AppLocalizations.of('My Cab'),
-          // home: PhoneVerification(),
+          initialRoute: Routes.SPLASH,
           routes: routes,
           theme: CoustomTheme.getThemeData(),
           builder: (BuildContext context, Widget? child) {

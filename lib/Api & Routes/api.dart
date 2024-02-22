@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:fluttertoast/fluttertoast.dart' as ft;
 import 'package:my_cab/constance/routes.dart';
@@ -10,6 +11,7 @@ import '../models/car_model.dart';
 import '../models/car_price_model.dart';
 import '../models/company_model.dart';
 import '../providers/homepro.dart';
+import '../providers/mappro.dart';
 class API {
   static String? devid;
   static showLoading(String text, BuildContext context) {
@@ -319,6 +321,16 @@ class API {
       return false;
     }
   }
+  static Map<String, String> generateStopData(List<LatLng> stopsLatLongList,BuildContext context) {
+    Map<String, String> stopData = {};
+    stopData['stop_count'] = stopsLatLongList.length.toString();
+    for (int i = 0; i < stopsLatLongList.length; i++) {
+      stopData['bm_stop_${i + 1}'] = Provider.of<MapPro>(context, listen: false).stopsListController[i].text;
+      stopData['bm_stop_lat_${i + 1}'] = stopsLatLongList[i].latitude.toString();
+      stopData['bm_stop_lang_${i + 1}'] = stopsLatLongList[i].longitude.toString();
+    }
+    return stopData;
+  }
 
   static Future<bool> addBooking(BuildContext context) async {
     var request = http.MultipartRequest(
@@ -331,32 +343,25 @@ class API {
       'Accept': 'application/json',
       'token': Provider.of<HomePro>(context, listen: false).token,
     });
+    Map<String, String> stopData = generateStopData(Provider.of<MapPro>(context, listen: false).stopsLatLongList,context);
     request.fields.addAll({
       'ac_customer': Provider.of<HomePro>(context, listen: false).userid.toString(),
-      'bm_date': DateTime.now().toString(),
-      'price': '239',
-      'bm_pickup': 'fiazabad',
-      'bm_drop': 'saddar',
-      'bm_pickup_note': 'testing',
-      'bm_drop_note': 'testing',
-      'bm_driver_note': 'testing note',
-      'payment': '1',
+      'bm_date': Provider.of<MapPro>(context, listen: false).selectedDateTime.toString(),
+      'price': Provider.of<MapPro>(context, listen: false).selectedCar.price,
+      'bm_pickup': Provider.of<MapPro>(context, listen: false).pickupController.text,
+      'bm_drop': Provider.of<MapPro>(context, listen: false).dropController.text,
+      'payment': Provider.of<MapPro>(context, listen: false).selectedPaymentMethod.toString(),
       'passenger': '1',
-      'flight_number': '324',
-      'distance': '538',
-      'time': '3 hours 30 minute',
-      'extra_notes': 'testing',
-      'plat': '1.324213452345',
-      'plang': '2.235432453',
-      'dlat': '3.34546456',
-      'dlang': '3.346545675687',
-      'bm_stop_1': 'rehamanadbad',
-      'bm_stop_lat_1': '3.54645645',
-      'bm_stop_lang_1': '3.34564645',
-      'bm_stop_2': 'chandni chowk',
-      'bm_stop_lat_2': '3.45677548',
-      'bm_stop_lang_2': '3.5464567547',
-      'stop_count': '2'
+      'flight_number': Provider.of<MapPro>(context, listen: false).flightNoController.text,
+      'distance': Provider.of<MapPro>(context, listen: false).selectedCar.distance,
+      'time': Provider.of<MapPro>(context, listen: false).selectedCar.formattedTime,
+      'extra_notes': Provider.of<MapPro>(context, listen: false).noteController.text,
+      'plat': Provider.of<MapPro>(context, listen: false).plat.toString(),
+      'plang': Provider.of<MapPro>(context, listen: false).plong.toString(),
+      'dlat': Provider.of<MapPro>(context, listen: false).dlat.toString(),
+      'dlang': Provider.of<MapPro>(context, listen: false).dlong.toString(),
+      'stop_count': Provider.of<MapPro>(context, listen: false).stopsLatLongList.length.toString(),
+      ...stopData,
     });
     http.StreamedResponse response;
     try {
