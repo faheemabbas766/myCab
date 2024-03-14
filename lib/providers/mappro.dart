@@ -3,6 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import '../models/car_price_model.dart';
+import '../models/company_model.dart';
 
 class MapPro with ChangeNotifier {
   double plat = 51.50470714600269;
@@ -16,14 +17,31 @@ class MapPro with ChangeNotifier {
   LatLng londonLatLong = const LatLng(51.505939, -0.088727);
   DateTime selectedDateTime = DateTime.now();
   int selectedPaymentMethod = 1;
+  CompanyModel selectedCompany = CompanyModel(cId: '1', title: "faheem", companyAddress: "companyAddress", companyContactPerson: "companyContactPerson", companyContact: "companyContact", reference: "reference", createdDate: "createdDate", updatedDate: "updatedDate", isActive: "isActive", validUpto: "validUpto");
   final TextEditingController noteController = TextEditingController();
   final TextEditingController flightNoController = TextEditingController();
   final TextEditingController luggageController = TextEditingController();
   List<LatLng> stopsLatLongList = [];
+  List<CompanyModel> companyList = [];
   List<TextEditingController> stopsListController = [];
+  String getPaymentName(){
+    if(selectedPaymentMethod==1) {
+      return 'CASH';
+    }
+    if(selectedPaymentMethod==2) {
+      return 'CARD';
+    }
+    if(selectedPaymentMethod==3) {
+      return 'ACCOUNT';
+    }
+    return 'Select';
+  }
   Future<void> getStopsCoordinates() async {
     stopsLatLongList = [];
     const apiKey = 'AIzaSyD7nCnza24yu8qP2q5B0o7y0Qg54oUdNE4';
+    if(stopsListController.isEmpty){
+      return;
+    }
     List<String> addresses = stopsListController.map((controller) => controller.text).toList();
     String joinedAddresses = addresses.join('|');
     final geocodeUrl =
@@ -54,10 +72,6 @@ class MapPro with ChangeNotifier {
       formattedTime: '',
       car_name: '');
   notifyListenerz() {
-    notifyListeners();
-  }
-  void calculateCenter() {
-    londonLatLong = LatLng(plat, plong);
     notifyListeners();
   }
 }

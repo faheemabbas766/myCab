@@ -88,9 +88,7 @@ class _DetailsPageState extends State<AddBookingScreen> {
     }
   }
   Future<void> sendBookingData(Map<String, dynamic> bookingData) async {
-    final apiUrl = Uri.parse(
-        'https://minicab.imdispatch.co.uk/api/customeraddjob');
-
+    final apiUrl = Uri.parse('https://minicab.imdispatch.co.uk/api/customeraddjob');
     try {
       final response = await http.post(
         apiUrl,

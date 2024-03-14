@@ -5,15 +5,18 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:fluttertoast/fluttertoast.dart' as ft;
 import 'package:my_cab/constance/routes.dart';
+import 'package:my_cab/models/all_booking_model.dart';
+import 'package:my_cab/models/booking_details_model.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../models/car_model.dart';
 import '../models/car_price_model.dart';
 import '../models/company_model.dart';
+import '../providers/bookingpro.dart';
 import '../providers/homepro.dart';
 import '../providers/mappro.dart';
 class API {
   static String? devid;
+  static String baseApi = 'https://minicab.imdispatch.co.uk/api/';
   static showLoading(String text, BuildContext context) {
     showDialog(
       context: context,
@@ -59,7 +62,7 @@ class API {
   static Future<bool> logIn(String username, String pwd, BuildContext context) async {
     var request = http.MultipartRequest(
       'POST',
-      Uri.parse("https://minicab.imdispatch.co.uk/api/cuslogin"),
+      Uri.parse("${baseApi}cuslogin"),
     );
     request.headers.addAll({
       'Content-type': 'multipart/form-data'
@@ -105,7 +108,7 @@ class API {
           msg: "Sign In Unsuccessful",
           toastLength: ft.Toast.LENGTH_LONG,
         );
-            return false;
+        return false;
       }
     } catch (e) {
       print("ROLAAAAAAAAAAAAAAAAAAAAAA$e");
@@ -119,7 +122,7 @@ class API {
   static Future<bool> signUp({required String CUS_NAME, required String CUS_EMAIL, required String CUS_PASSWORD, required String CUS_GENDER, required String CUS_ADRESS, required String CUS_PHONE, required BuildContext context}) async {
     var request = http.MultipartRequest(
       'POST',
-      Uri.parse("https://minicab.imdispatch.co.uk/api/cusregister"),
+      Uri.parse("${baseApi}cusregister"),
     );
     request.headers.addAll({
       'Content-type': 'multipart/form-data'
@@ -185,7 +188,7 @@ class API {
   static Future<bool> updatePassword({required String password, required BuildContext context}) async {
     var request = http.MultipartRequest(
       'POST',
-      Uri.parse("https://minicab.imdispatch.co.uk/api/updatepass"),
+      Uri.parse("${baseApi}updatepass"),
     );
     request.headers.addAll({
       'Content-type': 'multipart/form-data'
@@ -227,7 +230,7 @@ class API {
   static Future<bool> sendOTP({required String email, required BuildContext context}) async {
     var request = http.MultipartRequest(
       'POST',
-      Uri.parse("https://minicab.imdispatch.co.uk/api/forgetpass"),
+      Uri.parse("${baseApi}forgetpass"),
     );
     request.headers.addAll({
       'Content-type': 'multipart/form-data'
@@ -279,7 +282,7 @@ class API {
   static Future<bool> updateAccountStatus({required BuildContext context}) async {
     var request = http.MultipartRequest(
       'POST',
-      Uri.parse("https://minicab.imdispatch.co.uk/api/cus_status_change"),
+      Uri.parse("${baseApi}cus_status_change"),
     );
     request.headers.addAll({
       'Content-type': 'multipart/form-data'
@@ -299,7 +302,6 @@ class API {
           msg: "Account Successfully Activated",
           toastLength: ft.Toast.LENGTH_LONG,
         );
-        var res = jsonDecode(responsed.body);
         print("RESPONSE IS : : : : : :${responsed.body}");
         return true;
       }
@@ -331,13 +333,8 @@ class API {
     }
     return stopData;
   }
-
   static Future<bool> addBooking(BuildContext context) async {
-    var request = http.MultipartRequest(
-      'POST',
-      Uri.parse(
-          "https://minicab.imdispatch.co.uk/api/customeraddjob"),
-    );
+    var request = http.MultipartRequest('POST', Uri.parse("${baseApi}customeraddjob"));
     request.headers.addAll({
       'Content-type': 'multipart/form-data',
       'Accept': 'application/json',
@@ -345,7 +342,7 @@ class API {
     });
     Map<String, String> stopData = generateStopData(Provider.of<MapPro>(context, listen: false).stopsLatLongList,context);
     request.fields.addAll({
-      'ac_customer': Provider.of<HomePro>(context, listen: false).userid.toString(),
+      'customer_id': Provider.of<HomePro>(context, listen: false).userid.toString(),
       'bm_date': Provider.of<MapPro>(context, listen: false).selectedDateTime.toString(),
       'price': Provider.of<MapPro>(context, listen: false).selectedCar.price,
       'bm_pickup': Provider.of<MapPro>(context, listen: false).pickupController.text,
@@ -361,6 +358,8 @@ class API {
       'dlat': Provider.of<MapPro>(context, listen: false).dlat.toString(),
       'dlang': Provider.of<MapPro>(context, listen: false).dlong.toString(),
       'stop_count': Provider.of<MapPro>(context, listen: false).stopsLatLongList.length.toString(),
+      'company_id':Provider.of<MapPro>(context, listen: false).selectedCompany.cId,
+      'car_id':Provider.of<MapPro>(context, listen: false).selectedCar.carId,
       ...stopData,
     });
     http.StreamedResponse response;
@@ -370,23 +369,22 @@ class API {
         throw "TimeOut";
       });
       var responsed = await http.Response.fromStream(response);
+      print("RESPONSE IS : : : : : :${responsed.body}");
       if (response.statusCode == 401){
         SharedPreferences.getInstance().then((prefs) {
           prefs.clear();
         });
-
         Navigator.of(context).pushNamedAndRemoveUntil(Routes.LOGIN, (route) => false,);
       }
       if (response.statusCode == 200) {
-        print("RESPONSE IS : : : : : :${responsed.body}");
-        print(
-            "AAALLLLLLLLLLLLLLL GOOOOOOOOOOOOOOOOOODDDDDDDDDDDDDDDDDDDDDDDDd");
+        Map<String, dynamic> responseBody = json.decode(responsed.body);
+        Provider.of<BookingPro>(context,listen: false).currentBookingId = responseBody['data']['BM_SN'];
         return true;
-      } else {
+      }else {
         print(
             "STATUS CODE IS : : : : : : : : : :${response.statusCode}: ${responsed.body}");
         ft.Fluttertoast.showToast(
-          msg: "failed",
+          msg: "Booking failed",
           toastLength: ft.Toast.LENGTH_LONG,
         );
         return false;
@@ -401,12 +399,14 @@ class API {
     }
   }
   static Future<List<CarPriceModel>> getAllCarsPrice(double plat, double plong, double dlat, double dlong, BuildContext context) async {
-    var request = http.MultipartRequest('POST', Uri.parse('https://minicab.imdispatch.co.uk/api/getallcarprice'));
+    var request = http.MultipartRequest('POST', Uri.parse('${baseApi}getallcarprice'));
+    Map<String, String> stopData = generateStopData(Provider.of<MapPro>(context, listen: false).stopsLatLongList,context);
     request.fields.addAll({
       'plat': '$plat',
       'plang': '$plong',
       'dlat': '$dlat',
-      'dlang': '$dlong'
+      'dlang': '$dlong',
+      ...stopData,
     });
     http.StreamedResponse response = await request.send();
     if (response.statusCode == 200) {
@@ -433,12 +433,63 @@ class API {
   }
   static Future<List<CompanyModel>> getAllCompanies() async {
     final response = await http.get(
-      Uri.parse('https://minicab.imdispatch.co.uk/api/getallcompanies'),
+      Uri.parse('${baseApi}getallcompanies'),
     );
     if (response.statusCode == 200) {
       return CompanyModel.fromJsonArray(json.decode(response.body)['data']);
     } else {
       return [];
+    }
+  }
+  static Future<BookingDetails> getBookingById(String id) async {
+    var request = http.MultipartRequest('POST', Uri.parse('${baseApi}get_booking_by_id'));
+    request.fields.addAll({'booking_id': id});
+    try {
+      http.StreamedResponse response = await request.send();
+      if (response.statusCode == 200) {
+        var data = await response.stream.bytesToString();
+        final Map<String, dynamic> json = jsonDecode(data);
+        return BookingDetails.fromJson(json);
+      } else {
+        print('Error: ${response.reasonPhrase}');
+        return BookingDetails(status: 'failed', data: BookingData(), message: 'message');
+      }
+    } catch (e) {
+      print('Error: $e');return BookingDetails(status: 'failed', data: BookingData(), message: 'message');
+    }
+  }
+  static Future<bool> waitingForResponse(String id, BuildContext context) async {
+    while(true){
+      Future.delayed(const Duration(seconds: 5));
+      BookingDetails response = await getBookingById(id);
+      if(response.data.bsStatus == 'Not Assigned') {
+        continue;
+      }
+      Provider.of<BookingPro>(context,listen: false).currentBooking= response.data;
+      return true;
+    }
+  }
+  static Future<List<BookingModel>> getAllBookings(String cid) async {
+    var request = http.MultipartRequest('POST', Uri.parse('${baseApi}getcusallbooking'));
+    request.fields.addAll({
+      'customer_id': cid,
+    });
+
+    try {
+      http.StreamedResponse response = await request.send();
+
+      if (response.statusCode == 200) {
+        var responseBody = await response.stream.bytesToString();
+        final Map<String, dynamic> json = jsonDecode(responseBody);
+        return (json['data'] as List<dynamic>)
+            .map((item) => BookingModel.fromJson(item))
+            .toList();
+      } else {
+        throw Exception('Failed to load data');
+      }
+    } catch (e) {
+      print('Error: $e');
+      throw Exception('Failed to load data');
     }
   }
 }

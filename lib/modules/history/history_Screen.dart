@@ -2,8 +2,15 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:my_cab/Language/appLocalizations.dart';
 import 'package:my_cab/constance/themes.dart';
+import 'package:my_cab/modules/history/bookingDetails_Screen.dart';
+import 'package:my_cab/modules/home/home_screen.dart';
+import 'package:my_cab/modules/home/requset_view.dart';
 import 'package:my_cab/modules/rating/rating_screen.dart';
 import 'package:my_cab/modules/widgets/cardWidget.dart';
+import 'package:provider/provider.dart';
+import '../../Api & Routes/api.dart';
+import '../../models/all_booking_model.dart';
+import '../../providers/homepro.dart';
 
 class HistoryScreen extends StatefulWidget {
   @override
@@ -11,11 +18,25 @@ class HistoryScreen extends StatefulWidget {
 }
 
 class _HistoryScreenState extends State<HistoryScreen> {
+  List<BookingModel> list= [];
+  bool isLoading = true;
+  Future<void> loadData() async {
+    list = await API.getAllBookings(Provider.of<HomePro>(context, listen: false).userid.toString());
+    setState(() {
+      isLoading = false;
+    });
+  }
+  @override
+  void initState() {
+    super.initState();
+    loadData();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      body: Stack(
+      body: isLoading? const Center(child: CircularProgressIndicator(),)
+          :Stack(
         children: <Widget>[
           Container(
             height: MediaQuery.of(context).size.height / 3.5,
@@ -28,18 +49,18 @@ class _HistoryScreenState extends State<HistoryScreen> {
                 height: MediaQuery.of(context).padding.top + 16,
               ),
               Padding(
-                padding: EdgeInsets.only(right: 14, left: 14),
+                padding: const EdgeInsets.only(right: 14, left: 14),
                 child: GestureDetector(
                   onTap: () {
                     Navigator.pop(context);
                   },
-                  child: Icon(
+                  child: const Icon(
                     Icons.arrow_back_ios,
                     color: Colors.white,
                   ),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 16,
               ),
               Padding(
@@ -50,15 +71,15 @@ class _HistoryScreenState extends State<HistoryScreen> {
                     Text(
                       AppLocalizations.of('History'),
                       style: Theme.of(context).textTheme.headlineSmall!.copyWith(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          ),
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
                     ),
                     ClipRect(
                       child: BackdropFilter(
-                        filter: new ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+                        filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
                         child: Container(
-                          decoration: new BoxDecoration(
+                          decoration: BoxDecoration(
                             color: Colors.grey.shade200.withOpacity(0.5),
                             borderRadius: BorderRadius.all(
                               Radius.circular(20),
@@ -73,14 +94,14 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                   child: Text(
                                     AppLocalizations.of('Oct 15,2020'),
                                     style: Theme.of(context).textTheme.titleSmall!.copyWith(
-                                          color: Colors.white,
-                                        ),
+                                      color: Colors.white,
+                                    ),
                                   ),
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   width: 8,
                                 ),
-                                Icon(
+                                const Icon(
                                   Icons.keyboard_arrow_down,
                                   color: Colors.white,
                                 )
@@ -94,69 +115,40 @@ class _HistoryScreenState extends State<HistoryScreen> {
                 ),
               ),
               Expanded(
-                child: SingleChildScrollView(
-                  padding: EdgeInsets.only(top: 0, right: 14, left: 14),
-                  child: Column(
-                    children: <Widget>[
-                      InkWell(
-                        onTap: () {
-                          gotorating();
-                        },
-                        child: CardWidget(
-                          fromAddress: AppLocalizations.of('465 Swift Village'),
-                          toAddress: AppLocalizations.of('105 William St, Chicago, US'),
-                          price: "\$75.00",
-                          status: AppLocalizations.of('Confirm'),
-                          statusColor: HexColor("#3638FE"),
+                child: ListView.builder(
+                  itemCount: list.length,
+                  itemBuilder: (context, index) {
+                    return Column(
+                      children: [
+                        InkWell(
+                          onTap: () {
+                            if(list[index].bsStatus=="Accepted"){
+                              Navigator.of(context).push(MaterialPageRoute(builder: (context) => BookingDetailsScreen(id:list[index].bmSN),));
+                            }
+                            if(list[index].bsStatus=="Completed"){
+                              gotorating();
+                            }
+                            if(list[index].bsStatus=="Pending"){
+                              Navigator.of(context).push(MaterialPageRoute(builder: (context) => BookingDetailsScreen(id:list[index].bmSN),));
+                            }
+                          },
+                          child: CardWidget(
+                            price: "${list[index].totalAmount}£",
+                            status: AppLocalizations.of(list[index].bsStatus),
+                            statusColor: list[index].bsStatus == "Pending"
+                                ? HexColor("#3638FE")
+                                : list[index].bsStatus == "Not Assigned"
+                                ? Colors.black54
+                                : Colors.green,
+                            stopsList: list[index].stops!,
+                          ),
                         ),
-                      ),
-                      SizedBox(
-                        height: 16,
-                      ),
-                      InkWell(
-                        onTap: () {
-                          gotorating();
-                        },
-                        child: CardWidget(
-                          fromAddress: AppLocalizations.of('026 Mitchell Burg Apt. 567'),
-                          toAddress: AppLocalizations.of('342 Lottie Views 435'),
-                          price: "\$30.00",
-                          status: AppLocalizations.of('Completed'),
-                          statusColor: HexColor("#55E274"),
+                        const SizedBox(
+                          height: 16,
                         ),
-                      ),
-                      SizedBox(
-                        height: 16,
-                      ),
-                      InkWell(
-                        onTap: () {
-                          gotorating();
-                        },
-                        child: CardWidget(
-                          fromAddress: AppLocalizations.of('25 Stacy Falls Suite 453'),
-                          toAddress: AppLocalizations.of('090 Joaquian isle Suite 76'),
-                          price: "\$35.00",
-                          status: AppLocalizations.of('Cancelled'),
-                          statusColor: Theme.of(context).disabledColor,
-                        ),
-                      ),
-                      SizedBox(
-                        height: 16,
-                      ),
-                      InkWell(
-                        onTap: () {
-                          gotorating();
-                        },
-                        child: CardWidget(
-                          fromAddress: AppLocalizations.of('465 Swift Village'),
-                          toAddress: AppLocalizations.of('105 William St, Chicago, US'),
-                          price: "\$75.00",
-                          status: AppLocalizations.of('Confirm'),
-                          statusColor: HexColor("#3638FE"),
-                        ),
-                      ),
-                    ],
-                  ),
+                      ],
+                    );
+                  },
                 ),
               )
             ],
@@ -175,3 +167,4 @@ class _HistoryScreenState extends State<HistoryScreen> {
     );
   }
 }
+

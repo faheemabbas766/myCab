@@ -6,9 +6,7 @@ class CompanyModel {
   final String companyContact;
   final String reference;
   final String createdDate;
-  final String createdBy;
   final String updatedDate;
-  final String updatedBy;
   final String isActive;
   final String validUpto;
 
@@ -20,9 +18,7 @@ class CompanyModel {
     required this.companyContact,
     required this.reference,
     required this.createdDate,
-    required this.createdBy,
     required this.updatedDate,
-    required this.updatedBy,
     required this.isActive,
     required this.validUpto,
   });
@@ -36,9 +32,7 @@ class CompanyModel {
       companyContact: json['conpany_contact'],
       reference: json['reference'],
       createdDate: json['createddate'],
-      createdBy: json['createdby'],
       updatedDate: json['updateddate'],
-      updatedBy: json['updatedby'],
       isActive: json['is_active'],
       validUpto: json['valid_upto'],
     );

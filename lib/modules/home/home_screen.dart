@@ -14,9 +14,9 @@ import 'package:my_cab/modules/home/addressSelctionView.dart';
 import 'package:my_cab/modules/home/requset_view.dart';
 import 'package:provider/provider.dart';
 import '../../providers/mappro.dart';
-
+int mapSize = 1;
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+  const HomeScreen({super.key});
 
   @override
   _HomeScreenState createState() => _HomeScreenState();
@@ -27,12 +27,12 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
 
   late GoogleMapController _mapController;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
-
-  bool isSerchMode = false;
+  bool isSearchMode = false;
   bool isUp = true;
   late BitmapDescriptor carMapBitmapDescriptor;
   late BitmapDescriptor startMapBitmapDescriptor;
   late BitmapDescriptor endMapBitmapDescriptor;
+  late BitmapDescriptor stopMapBitmapDescriptor;
   late BuildContext currentcontext;
   TextEditingController serachController = TextEditingController();
   ProsseType prosseType = ProsseType.dropOff;
@@ -48,105 +48,19 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
     startMapBitmapDescriptor = await BitmapDescriptor.fromAssetImage(startStartConfiguration, ConstanceData.startmapPin);
     final ImageConfiguration endStartConfiguration = createLocalImageConfiguration(currentcontext);
     endMapBitmapDescriptor = await BitmapDescriptor.fromAssetImage(endStartConfiguration, ConstanceData.endmapPin);
-
-    setState(() {});
+    stopMapBitmapDescriptor = BitmapDescriptor.defaultMarkerWithHue(3);
   }
-
-  final _random = math.Random();
-  int next(int min, int max) => min + _random.nextInt(max - min);
-
   @override
   void initState() {
     serachController.text = AppLocalizations.of('Set your pickup point');
     animationController = AnimationController(vsync: this, duration: const Duration(milliseconds: 480));
     animationController.animateTo(1);
     super.initState();
-    _carPinInitState();
   }
-
-  Future<void> _carPinInitState() async {
-    carPointOne = ConstanceData.getCarOnePolyLineList();
-    carPointTwo = ConstanceData.getCarTwoPolyLineList();
-    carPointThree = ConstanceData.getCarThreePolyLineList();
-    carPointFour = ConstanceData.getCarFourPolyLineList();
-    Provider.of<MapPro>(context,listen: false).londonLatLong = LatLng(Provider.of<MapPro>(context, listen: false).plat, Provider.of<MapPro>(context, listen: false).plong);
-    Provider.of<MapPro>(context, listen: false).poliList = await ConstanceData.getRoutePolyLineList(context);
-    Timer(Duration(milliseconds: next(1200, 4000)), carOnePin);
-    Timer(Duration(milliseconds: next(1200, 4000)), carTwoPin);
-    Timer(Duration(milliseconds: next(1200, 4000)), carThreePin);
-    Timer(Duration(milliseconds: next(1200, 4000)), carFourPin);
-  }
-
-  Future carOnePin() async {
-    if (carOneIndex + 1 < carPointOne.length) {
-      carOneIndex += 1;
-    } else {
-      carOneIndex = 0;
-    }
-    if (mounted) setState(() {});
-    Timer(Duration(milliseconds: next(1200, 4000)), carOnePin);
-  }
-
-  Future carTwoPin() async {
-    if (carTwoIndex + 1 < carPointTwo.length) {
-      carTwoIndex += 1;
-    } else {
-      carTwoIndex = 0;
-    }
-    if (mounted) setState(() {});
-    Timer(Duration(milliseconds: next(1200, 4000)), carTwoPin);
-  }
-
-  Future carThreePin() async {
-    if (carThreeIndex + 1 < carPointThree.length) {
-      carThreeIndex += 1;
-    } else {
-      carThreeIndex = 0;
-    }
-    if (mounted) setState(() {});
-    Timer(Duration(milliseconds: next(1200, 4000)), carThreePin);
-  }
-
-  Future carFourPin() async {
-    if (carFourIndex + 1 < carPointFour.length) {
-      carFourIndex += 1;
-    } else {
-      carFourIndex = 0;
-    }
-    if (mounted) setState(() {});
-    Timer(Duration(milliseconds: next(1200, 4000)), carFourPin);
-  }
-
   Map<MarkerId, Marker> getMarkerList(BuildContext context) {
     Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
-    for (var i = 0; i < 4; i++) {
-      LatLng startPoint = i == 0
-          ? carPointOne[carOneIndex]
-          : i == 1
-          ? carPointTwo[carTwoIndex]
-          : i == 2
-          ? carPointThree[carThreeIndex]
-          : carPointFour[carFourIndex];
-      LatLng lastPoint = i == 0
-          ? carPointOne[carOneIndex - 1 == -1 ? carPointOne.length - 1 : carOneIndex - 1]
-          : i == 1
-          ? carPointTwo[carTwoIndex - 1 == -1 ? carPointTwo.length - 1 : carTwoIndex - 1]
-          : i == 2
-          ? carPointThree[carThreeIndex - 1 == -1 ? carPointThree.length - 1 : carThreeIndex - 1]
-          : carPointFour[carFourIndex - 1 == -1 ? carPointFour.length - 1 : carFourIndex - 1];
-
-      final MarkerId markerId2 = MarkerId('$i');
-      final Marker marker2 = Marker(
-          markerId: markerId2,
-          position: startPoint,
-          anchor: Offset(0.5, 0.5),
-          icon: carMapBitmapDescriptor,
-          rotation: ConstanceData.getCarAngle(startPoint, lastPoint));
-      markers.addAll({markerId2: marker2});
-    }
-
     if (prosseType == ProsseType.requset) {
-      final MarkerId markerId2 = const MarkerId('start');
+      const MarkerId markerId2 = MarkerId('start');
       final Marker marker2 = Marker(
         markerId: markerId2,
         position: Provider.of<MapPro>(context, listen: false).poliList.first,
@@ -154,6 +68,16 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
         icon: startMapBitmapDescriptor,
       );
       markers.addAll({markerId2: marker2});
+      for(int i=0;i< Provider.of<MapPro>(context, listen: false).stopsLatLongList.length;i++){
+        final MarkerId markerId = MarkerId('stop$i');
+        final Marker marker = Marker(
+          markerId: markerId,
+          position: Provider.of<MapPro>(context, listen: false).stopsLatLongList[i],
+          anchor: const Offset(0.5, 1.0),
+          icon: stopMapBitmapDescriptor,
+        );
+        markers.addAll({markerId: marker});
+      }
 
       const MarkerId markerId = MarkerId('end');
       final Marker marker = Marker(
@@ -164,7 +88,6 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
       );
       markers.addAll({markerId: marker});
     }
-
     return markers;
   }
 
@@ -182,6 +105,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
         endCap: Cap.roundCap,
       );
       polylines.addAll({polylineId: polyline});
+      setMakerPinSize(context);
       _addPolylineToMap();
     }
     return polylines;
@@ -209,25 +133,25 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                   top: 0,
                   left: 0,
                   right: 0,
-                  height: MediaQuery.of(context).size.height,
+                  height: MediaQuery.of(context).size.height / mapSize,
                   child: GoogleMap(
                     initialCameraPosition: CameraPosition(
                       target: londonLatLong,
                       tilt: 30.0,
                       zoom: 16,
                     ),
-                    onCameraMoveStarted: () {},
-                    mapType: MapType.normal,
-                    markers: Set<Marker>.of(getMarkerList(context).values),
-                    onCameraMove: (CameraPosition position) {},
-                    polylines: Set<Polyline>.of(getPolilineData().values),
-                    onCameraIdle: () {},
                     compassEnabled: false,
                     myLocationButtonEnabled: false,
                     rotateGesturesEnabled: false,
                     tiltGesturesEnabled: false,
                     myLocationEnabled: false,
                     buildingsEnabled: false,
+                    onCameraMoveStarted: () {},
+                    mapType: MapType.normal,
+                    markers: Set<Marker>.of(getMarkerList(context).values),
+                    onCameraMove: (CameraPosition position) {},
+                    polylines: Set<Polyline>.of(getPolilineData().values),
+                    onCameraIdle: () {},
                     onMapCreated: (GoogleMapController controller) async {
                       _mapController = controller;
                       setMapStyle();
@@ -244,31 +168,35 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                   child: AddressSectionView(
                     callback: () {
                       setState(() {
+                        mapSize = 2;
                         prosseType = ProsseType.requset;
                       });
                     },
                     animationController: animationController,
-                    isSearchMode: isSerchMode,
+                    isSearchMode: isSearchMode,
                     isUp: isUp,
                     mapCallBack: () {
                       animationController.animateTo(
                           1, duration: const Duration(milliseconds: 480)).then((
                           f) {
                         setState(() {
+                          mapSize = 1;
                           prosseType = ProsseType.mapPin;
                         });
                       });
                     },
                     onSearchMode: (onSearchMode) {
-                      if (isSerchMode != onSearchMode) {
+                      if (isSearchMode != onSearchMode) {
                         setState(() {
-                          isSerchMode = onSearchMode;
+                          mapSize = 1;
+                          isSearchMode = onSearchMode;
                         });
                       }
                     },
                     onUp: (onUp) {
                       if (isUp != onUp) {
                         setState(() {
+                          mapSize = 1;
                           isUp = onUp;
                         });
                       }
@@ -296,6 +224,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                   barText: AppLocalizations.of('Choose a point'),
                   onBackClick: () {
                     setState(() {
+                      mapSize = 1;
                       prosseType = ProsseType.dropOff;
                     });
                   },
@@ -304,8 +233,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                     var pos = await Geolocator.getCurrentPosition();
                     print("Latitude  is : ${pos.latitude}");
                     print("Longitude is : ${pos.longitude}");
-                    Provider
-                        .of<MapPro>(context, listen: false)
+                    Provider.of<MapPro>(context, listen: false)
                         .londonLatLong = LatLng(pos.latitude, pos.longitude);
                     _mapController.animateCamera(
                       CameraUpdate.newCameraPosition(
@@ -321,6 +249,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                   },
                   callback: () {
                     setState(() {
+                      mapSize = 1;
                       prosseType = ProsseType.requset;
                     });
                   },
@@ -328,6 +257,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                     : RequestView(
                   onBack: () {
                     setState(() {
+                      mapSize = 1;
                       prosseType = ProsseType.dropOff;
                     });
                   },
@@ -405,7 +335,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
   }
   void _addPolylineToMap() {
     LatLngBounds bounds = calculateBounds(Provider.of<MapPro>(context,listen: false).poliList);
-    _mapController.animateCamera(CameraUpdate.newLatLngBounds(bounds, 50)); // 50 is padding
+    _mapController.moveCamera(CameraUpdate.newLatLngBounds(bounds, 70));
   }
 }
 

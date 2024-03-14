@@ -395,7 +395,7 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                                                 }
                                               },
                                               style: ElevatedButton.styleFrom(
-                                                primary: Theme.of(context).primaryColor, // Change button color
+                                                backgroundColor: Theme.of(context).primaryColor, // Change button color
                                                 padding: EdgeInsets.symmetric(vertical: 16.0),
                                               ),
                                               child: Text(

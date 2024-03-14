@@ -659,7 +659,7 @@ class _MyWalletState extends State<MyWallet> {
                                           color: Theme.of(context).primaryColor,
                                         ),
                                         Text(
-                                          AppLocalizations.of('Booking Succsessful'),
+                                          AppLocalizations.of('Booking Successful'),
                                           style: Theme.of(context).textTheme.titleMedium!.copyWith(
                                                 color: Theme.of(context).textTheme.titleMedium!.color,
                                                 fontWeight: FontWeight.bold,

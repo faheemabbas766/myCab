@@ -26,7 +26,12 @@ dependencies:
   flutter_ringtone_player: ^4.0.0+2
   http: ^1.1.0
   intl: any
+  screenshot: ^2.1.0
+  path_provider: ^2.0.14
+  share: ^2.0.4
+  image_gallery_saver: ^2.0.3
   flutter_polyline_points: ^2.0.0
+  firebase_analytics: ^10.8.7
 
 dev_dependencies:
   flutter_test:

@@ -4,13 +4,16 @@ import 'package:intl/intl.dart';
 import 'package:my_cab/Language/appLocalizations.dart';
 import 'package:my_cab/constance/constance.dart';
 import 'package:my_cab/constance/themes.dart';
+import 'package:my_cab/models/company_model.dart';
 import 'package:my_cab/modules/chat/chat_Screen.dart';
 import 'package:my_cab/constance/global.dart' as globals;
+import 'package:my_cab/providers/bookingpro.dart';
 import 'package:provider/provider.dart';
 import '../../Api & Routes/api.dart';
 import '../../models/car_price_model.dart';
+import '../../providers/homepro.dart';
 import '../../providers/mappro.dart';
-import 'package:fluttertoast/fluttertoast.dart'as ft;
+import '../history/history_Screen.dart';
 class RequestView extends StatefulWidget {
   final VoidCallback onBack;
   const RequestView({super.key, required this.onBack,});
@@ -77,6 +80,9 @@ class RequestViewState extends State<RequestView> {
   @override
   void initState() {
     super.initState();
+    if(Provider.of<MapPro>(context, listen: false).selectedCompany.title=='faheem'){
+      Provider.of<MapPro>(context, listen: false).selectedCompany = Provider.of<MapPro>(context, listen: false).companyList[0];
+    }
     loadData();
   }
   @override
@@ -371,49 +377,94 @@ class RequestViewState extends State<RequestView> {
                         ],
                       ),
                     ),
-                    InkWell(
-                      onTap: () {
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return AlertDialog(
-                              title: const Text('Extra Note'),
-                              content: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: <Widget>[
-                                  TextField(
-                                    controller: Provider.of<MapPro>(context, listen: false).noteController,
-                                    decoration: const InputDecoration(
-                                      hintText: 'Input Note',
-                                    ),
+                    Row(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(left: 40),
+                          child: PopupMenuButton<CompanyModel>(
+                            onSelected: (CompanyModel selectedItem) {
+                              setState(() {
+                                Provider.of<MapPro>(context, listen: false).selectedCompany = selectedItem;
+                              });
+                              // Handle the selected item here
+                              print('Selected item: $selectedItem');
+                            },
+                            itemBuilder: (BuildContext context) {
+                              return Provider.of<MapPro>(context, listen: false).companyList.map((CompanyModel e) {
+                                return PopupMenuItem<CompanyModel>(
+                                  value: e,
+                                  child: Text(e.title),
+                                );
+                              }).toList();
+                            },
+                            child: Column(
+                              children: <Widget>[
+                                Text(
+                                  AppLocalizations.of('Company'),
+                                  style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                                    color: Theme.of(context).disabledColor,
                                   ),
-                                  const SizedBox(height: 16),
-                                  ElevatedButton(
-                                    onPressed: () {
-                                      Navigator.of(context).pop();
-                                    },
-                                    child: const Text('Enter'),
+                                ),
+                                Text(
+                                  AppLocalizations.of(Provider.of<MapPro>(context, listen: false).selectedCompany.title),
+                                  style: Theme.of(context).textTheme.titleSmall!.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                    color: Theme.of(context).disabledColor,
                                   ),
-                                ],
-                              ),
-                            );
-                          },
-                        );
-                      },
-                      child: Column(
-                        children: <Widget>[
-                          Text(
-                            'Extra Note',
-                            style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                              color: Theme.of(context).disabledColor,
+                                ),
+                              ],
                             ),
                           ),
-                          Text(Provider.of<MapPro>(context, listen: false).noteController.text==''? "Enter here":Provider.of<MapPro>(context, listen: false).noteController.text,
-                              style: Theme.of(context).textTheme.titleSmall!.copyWith(
-                                fontWeight: FontWeight.bold,
-                                color: Theme.of(context).disabledColor,)),
-                        ],
-                      ),
+                        ),
+                        Spacer(),
+                        Padding(
+                          padding: const EdgeInsets.only(right: 40),
+                          child: InkWell(
+                            onTap: () {
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title: const Text('Extra Note'),
+                                    content: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: <Widget>[
+                                        TextField(
+                                          controller: Provider.of<MapPro>(context, listen: false).noteController,
+                                          decoration: const InputDecoration(
+                                            hintText: 'Input Note',
+                                          ),
+                                        ),
+                                        const SizedBox(height: 16),
+                                        ElevatedButton(
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                          child: const Text('Enter'),
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                },
+                              );
+                            },
+                            child: Column(
+                              children: <Widget>[
+                                Text(
+                                  'Extra Note',
+                                  style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                                    color: Theme.of(context).disabledColor,
+                                  ),
+                                ),
+                                Text(Provider.of<MapPro>(context, listen: false).noteController.text==''? "Enter here":Provider.of<MapPro>(context, listen: false).noteController.text,
+                                    style: Theme.of(context).textTheme.titleSmall!.copyWith(
+                                      fontWeight: FontWeight.bold,
+                                      color: Theme.of(context).disabledColor,)),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                     Padding(
                       padding: const EdgeInsets.only(left: 24, right: 24, bottom: 16, top: 8),
@@ -437,16 +488,197 @@ class RequestViewState extends State<RequestView> {
                             highlightColor: Colors.transparent,
                             onTap: () async {
                               API.showLoading("Booking...", context);
-                              if(await API.addBooking(context)){
-                                Navigator.pop(context);
-                                ft.Fluttertoast.showToast(
-                                  msg: "Booking Completed!!!",
-                                  toastLength: ft.Toast.LENGTH_LONG,
+                              if(await API.addBooking(context)) {
+                                Navigator.of(context).pop();
+                                await showDialog(
+                                  barrierDismissible: false,
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      content: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: <Widget>[
+                                          Icon(
+                                            Icons.check_circle,
+                                            size: 80,
+                                            color: Theme.of(context).primaryColor,
+                                          ),
+                                          Text(
+                                            AppLocalizations.of('Booking Successful'),
+                                            style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                                              color: Theme.of(context).textTheme.titleMedium!.color,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            height: 8,
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.only(right: 16, left: 16, bottom: 16),
+                                            child: Text(
+                                              AppLocalizations.of(' Your booking is confirmed.\n'
+                                                  'Click below to increase the amount for a quicker response from our top-rated drivers.'),
+                                              style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                                                color: Theme.of(context).disabledColor,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                              textAlign: TextAlign.center,
+                                            ),
+                                          ),
+                                          // Text("Current Rate:${Provider.of<MapPro>(context,listen: false).selectedCar.price}£"),
+                                          Padding(
+                                            padding: const EdgeInsets.only(left:30,right:30,top:10,bottom:10),
+                                            child: Container(
+                                              height: 38,
+                                              decoration: BoxDecoration(
+                                                color: Theme.of(context).primaryColor,
+                                                borderRadius: BorderRadius.all(Radius.circular(24.0)),
+                                                boxShadow: <BoxShadow>[
+                                                  BoxShadow(
+                                                    color: Theme.of(context).dividerColor,
+                                                    blurRadius: 8,
+                                                    offset: Offset(4, 4),
+                                                  ),
+                                                ],
+                                              ),
+                                              child: Material(
+                                                color: Colors.transparent,
+                                                child: InkWell(
+                                                  borderRadius: BorderRadius.all(Radius.circular(24.0)),
+                                                  highlightColor: Colors.transparent,
+                                                  onTap: () {
+                                                  },
+                                                  child: Center(
+                                                    child: Text(AppLocalizations.of('Increase by 5£'), style: Theme.of(context).textTheme.titleMedium!.copyWith(color: Colors.white, fontWeight: FontWeight.bold),
+                                                    )
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          Divider(
+                                            height: 0,
+                                          ),
+                                          SizedBox(
+                                            child: Padding(
+                                              padding: const EdgeInsets.all(16),
+                                              child: InkWell(
+                                                onTap: () {
+                                                  Navigator.pop(context);
+                                                  setState(() {
+                                                    isConfirm = true;
+                                                  });
+                                                },
+                                                child: Container(
+                                                  child: Text(
+                                                    AppLocalizations.of('Done'),
+                                                    style: Theme.of(context).textTheme.titleSmall!.copyWith(
+                                                      color: Theme.of(context).primaryColor,
+                                                      fontWeight: FontWeight.bold,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                      contentPadding: EdgeInsets.only(top: 16),
+                                    );
+                                  },
+                                );
+                                print("ID:${Provider.of<HomePro>(context,listen: false).userid}");
+                                Navigator.of(context).push(MaterialPageRoute(builder: (context) => HistoryScreen(),));
+                              }else{
+                                Navigator.of(context).pop();
+                                setState(() {
+                                  isConfrimDriver = true;
+                                });
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      content: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: <Widget>[
+                                          Icon(
+                                            Icons.check_circle,
+                                            size: 80,
+                                            color: Theme.of(context).primaryColor,
+                                          ),
+                                          Text(
+                                            AppLocalizations.of('Booking Unsuccessful'),
+                                            style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                                              color: Theme.of(context).textTheme.titleMedium!.color,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            height: 8,
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.only(right: 16, left: 16, bottom: 16),
+                                            child: Text(
+                                              AppLocalizations.of('Something is wrong!!!. Please try again.'),
+                                              style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                                                color: Theme.of(context).disabledColor,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                              textAlign: TextAlign.center,
+                                            ),
+                                          ),
+                                          Divider(
+                                            height: 0,
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.only(right: 16, left: 16),
+                                            child: Row(
+                                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                              children: <Widget>[
+                                                InkWell(
+                                                  onTap: () {
+                                                    Navigator.pop(context);
+                                                  },
+                                                  child: Text(
+                                                    AppLocalizations.of('Cancel'),
+                                                    style: Theme.of(context).textTheme.titleSmall!.copyWith(
+                                                      color: Theme.of(context).disabledColor,
+                                                      fontWeight: FontWeight.bold,
+                                                    ),
+                                                  ),
+                                                ),
+                                                Container(
+                                                  color: Theme.of(context).dividerColor,
+                                                  width: 0.5,
+                                                  height: 48,
+                                                ),
+                                                InkWell(
+                                                  onTap: () {
+                                                    Navigator.pop(context);
+                                                    setState(() {
+                                                      isConfirm = true;
+                                                    });
+                                                  },
+                                                  child: Container(
+                                                    child: Text(
+                                                      AppLocalizations.of('Done'),
+                                                      style: Theme.of(context).textTheme.titleSmall!.copyWith(
+                                                        color: Theme.of(context).primaryColor,
+                                                        fontWeight: FontWeight.bold,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                      contentPadding: EdgeInsets.only(top: 16),
+                                    );
+                                  },
                                 );
                               }
-                              setState(() {
-                                isConfrimDriver = true;
-                              });
                             },
                             child: Center(
                               child: Text(
@@ -596,7 +828,7 @@ class RequestViewState extends State<RequestView> {
 
   bool isConfrimDriver = false;
 
-  Widget confirmDriverBox(context) {
+  Widget confirmBookingBox(context) {
     return Padding(
       padding: const EdgeInsets.only(right: 10, left: 10, bottom: 10),
       child: Stack(
@@ -907,6 +1139,379 @@ class RequestViewState extends State<RequestView> {
                             borderRadius: BorderRadius.all(Radius.circular(24.0)),
                             highlightColor: Colors.transparent,
                             onTap: () {
+                            },
+                            child: Center(
+                              child: !isConfirm
+                                  ? Text(
+                                AppLocalizations.of('Confirm'),
+                                style: Theme.of(context).textTheme.titleMedium!.copyWith(color: Colors.white, fontWeight: FontWeight.bold),
+                              )
+                                  : Text(
+                                AppLocalizations.of('Cancel Request'),
+                                style: Theme.of(context).textTheme.titleMedium!.copyWith(color: Colors.white, fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+  Widget confirmDriverBox(context) {
+    return Padding(
+      padding: const EdgeInsets.only(right: 10, left: 10, bottom: 10),
+      child: Stack(
+        alignment: Alignment.bottomCenter,
+        children: <Widget>[
+          Positioned(
+            top: 0,
+            right: 0,
+            left: 0,
+            bottom: 16,
+            child: Padding(
+              padding: const EdgeInsets.only(right: 24, left: 24),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Theme.of(context).scaffoldBackgroundColor,
+                  borderRadius: BorderRadius.circular(12),
+                  boxShadow: [
+                    BoxShadow(
+                      color: globals.isLight ? Colors.black.withOpacity(0.2) : Colors.white.withOpacity(0.2),
+                      blurRadius: 12,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          Positioned(
+            top: 12,
+            right: 0,
+            left: 0,
+            bottom: 16,
+            child: Padding(
+              padding: const EdgeInsets.only(right: 12, left: 12),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Theme.of(context).scaffoldBackgroundColor,
+                  borderRadius: BorderRadius.circular(12),
+                  boxShadow: [
+                    BoxShadow(
+                      color: globals.isLight ? Colors.black.withOpacity(0.2) : Colors.white.withOpacity(0.2),
+                      blurRadius: 6,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 24),
+            child: Container(
+              decoration: BoxDecoration(
+                color: Theme.of(context).scaffoldBackgroundColor,
+                borderRadius: BorderRadius.circular(12),
+                boxShadow: [
+                  BoxShadow(
+                    color: globals.isLight ? Colors.black.withOpacity(0.2) : Colors.white.withOpacity(0.2),
+                    blurRadius: 4,
+                  ),
+                ],
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(12),
+                child: Column(
+                  children: <Widget>[
+                    Container(
+                      color: Theme.of(context).dividerColor.withOpacity(0.03),
+                      padding: const EdgeInsets.all(14),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(40),
+                            child: Image.network(
+                              Provider.of<BookingPro>(context,listen: false).currentBooking.employeeImage?? "",
+                              height: 50,
+                              width: 50,
+                            ),
+                          ),
+                          const SizedBox(
+                            width: 8,
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text(
+                                AppLocalizations.of(Provider.of<BookingPro>(context,listen: false).currentBooking.driverName??""),
+                                style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                  color: Theme.of(context).textTheme.titleLarge!.color,
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 4,
+                              ),
+                              Row(
+                                children: <Widget>[
+                                  Icon(
+                                    Icons.star,
+                                    color: Colors.yellow[800],
+                                  ),
+                                  const SizedBox(
+                                    width: 4,
+                                  ),
+                                  Text(
+                                    AppLocalizations.of(Provider.of<BookingPro>(context,listen: false).currentBooking.employeePhvBadge??""),
+                                    style: Theme.of(context).textTheme.button!.copyWith(
+                                      fontWeight: FontWeight.bold,
+                                      color: Theme.of(context).dividerColor.withOpacity(0.4),
+                                    ),
+                                  )
+                                ],
+                              )
+                            ],
+                          ),
+                          const Expanded(
+                            child: SizedBox(),
+                          ),
+                          Row(
+                            children: <Widget>[
+                              InkWell(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => ChatScreen(),
+                                    ),
+                                  );
+                                },
+                                child: CircleAvatar(
+                                  backgroundColor: HexColor("#4353FB"),
+                                  child: const Center(
+                                    child: Icon(
+                                      FontAwesomeIcons.facebookMessenger,
+                                      size: 20,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(
+                                width: 8,
+                              ),
+                              CircleAvatar(
+                                backgroundColor: Theme.of(context).primaryColor,
+                                child: const Center(
+                                  child: Icon(
+                                    FontAwesomeIcons.phoneAlt,
+                                    size: 20,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    Divider(
+                      height: 0.5,
+                      color: Theme.of(context).dividerColor,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(right: 14, left: 14, top: 10, bottom: 10),
+                      child: Row(
+                        children: <Widget>[
+                          const Icon(
+                            FontAwesomeIcons.car,
+                            size: 24,
+                          ),
+                          const SizedBox(
+                            width: 8,
+                          ),
+                          const SizedBox(
+                            width: 32,
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: <Widget>[
+                              Text(
+                                AppLocalizations.of('VEHICLE'),
+                                style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                  color: Theme.of(context).dividerColor.withOpacity(0.4),
+                                ),
+                              ),
+                              Text(
+                                AppLocalizations.of(Provider.of<BookingPro>(context,listen: false).currentBooking.vehicleUvMake??""),
+                                style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                  color: Theme.of(context).textTheme.titleLarge!.color,
+                                ),
+                              )
+                            ],
+                          ),
+                          Expanded(child: SizedBox()),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: <Widget>[
+                              Text(
+                                AppLocalizations.of('REG NO'),
+                                style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                  color: Theme.of(context).dividerColor.withOpacity(0.4),
+                                ),
+                              ),
+                              Text(
+                                AppLocalizations.of(Provider.of<BookingPro>(context,listen: false).currentBooking.vehicleUvRegNum??""),
+                                style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                  color: Theme.of(context).textTheme.titleLarge!.color,
+                                ),
+                              )
+                            ],
+                          ),
+                          const Expanded(child: SizedBox()),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: <Widget>[
+                              Text(
+                                AppLocalizations.of('COLOR'),
+                                style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                  color: Theme.of(context).dividerColor.withOpacity(0.4),
+                                ),
+                              ),
+                              Text(
+                                AppLocalizations.of(Provider.of<BookingPro>(context,listen: false).currentBooking.vehicleUvColor??""),
+                                style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                  color: Theme.of(context).textTheme.titleLarge!.color,
+                                ),
+                              )
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                    Divider(
+                      height: 0.5,
+                      color: Theme.of(context).dividerColor,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(right: 14, left: 14, top: 10, bottom: 10),
+                      child: Row(
+                        children: <Widget>[
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: <Widget>[
+                              Text(
+                                AppLocalizations.of('DISTANCE'),
+                                style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                  color: Theme.of(context).dividerColor.withOpacity(0.4),
+                                ),
+                              ),
+                              Text(
+                                AppLocalizations.of("${Provider.of<BookingPro>(context,listen: false).currentBooking.bmDistance?.substring(0,6)} miles"),
+                                style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                  color: Theme.of(context).textTheme.titleLarge!.color,
+                                ),
+                              )
+                            ],
+                          ),
+                          Expanded(child: SizedBox()),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: <Widget>[
+                              Text(
+                                AppLocalizations.of('TIME'),
+                                style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                  color: Theme.of(context).dividerColor.withOpacity(0.4),
+                                ),
+                              ),
+                              Text(
+                                AppLocalizations.of(Provider.of<BookingPro>(context,listen: false).currentBooking.bmDistanceTime??""),
+                                style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                  color: Theme.of(context).textTheme.titleLarge!.color,
+                                ),
+                              )
+                            ],
+                          ),
+                          const Expanded(child: SizedBox()),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: <Widget>[
+                              Text(
+                                AppLocalizations.of('PRICE'),
+                                style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                  color: Theme.of(context).dividerColor.withOpacity(0.4),
+                                ),
+                              ),
+                              Text(
+                                AppLocalizations.of("${Provider.of<BookingPro>(context,listen: false).currentBooking.totalAmount??""}£"),
+                                style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                  color: Theme.of(context).textTheme.titleLarge!.color,
+                                ),
+                              )
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 50,right: 50),
+                      child: Row(
+                        children: <Widget>[
+                          const Text('Trace driver on map',),
+                          Spacer(),
+                          InkWell(
+                            onTap: () {
+                              print('pickup');
+                            },
+                            child: Icon(
+                              Icons.my_location_outlined,
+                              color: Colors.blue,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16, top: 8),
+                      child: Container(
+                        height: 48,
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).primaryColor,
+                          borderRadius: BorderRadius.all(Radius.circular(24.0)),
+                          boxShadow: <BoxShadow>[
+                            BoxShadow(
+                              color: Theme.of(context).dividerColor,
+                              blurRadius: 8,
+                              offset: Offset(4, 4),
+                            ),
+                          ],
+                        ),
+                        child: Material(
+                          color: Colors.transparent,
+                          child: InkWell(
+                            borderRadius: BorderRadius.all(Radius.circular(24.0)),
+                            highlightColor: Colors.transparent,
+                            onTap: () {
                               showDialog(
                                 context: context,
                                 builder: (BuildContext context) {
@@ -920,7 +1525,7 @@ class RequestViewState extends State<RequestView> {
                                           color: Theme.of(context).primaryColor,
                                         ),
                                         Text(
-                                          AppLocalizations.of('Booking Succsessful'),
+                                          AppLocalizations.of('Booking Successful'),
                                           style: Theme.of(context).textTheme.titleMedium!.copyWith(
                                             color: Theme.of(context).textTheme.titleMedium!.color,
                                             fontWeight: FontWeight.bold,

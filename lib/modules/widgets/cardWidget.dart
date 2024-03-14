@@ -2,16 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:my_cab/constance/constance.dart';
 
+import '../../models/all_booking_model.dart';
+
 class CardWidget extends StatelessWidget {
-  final String fromAddress;
-  final String toAddress;
   final String price;
   final String status;
   final Color statusColor;
-
-  const CardWidget({key, required this.fromAddress, required this.toAddress, required this.price, required this.status, required this.statusColor})
-      : super(key: key);
-
+  final List<Stop> stopsList;
+  const CardWidget(
+      {
+        super.key,
+        required this.price,
+        required this.status,
+        required this.statusColor,
+        required this.stopsList
+      });
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -19,60 +24,49 @@ class CardWidget extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.only(left: 8, top: 8, right: 8),
-            child: Row(
-              children: <Widget>[
-                Image.asset(
-                  ConstanceData.startPin,
-                  height: 32,
-                  width: 32,
-                ),
-                SizedBox(
-                  width: 8,
-                ),
-                Text(
-                  fromAddress,
-                  style: Theme.of(context).textTheme.titleSmall!.copyWith(
-                        color: Theme.of(context).textTheme.titleLarge!.color,
-                        fontWeight: FontWeight.bold,
+          ListView.builder(
+            shrinkWrap: true,
+            physics: NeverScrollableScrollPhysics(),
+            itemCount: stopsList.length,
+            itemBuilder: (context, index) {
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(left: 8, right: 8),
+                  child: Row(
+                    children: <Widget>[
+                      Image.asset(
+                        index ==0?ConstanceData.startmapPin: ConstanceData.endPin,
+                        height: 30,
+                        width: 30,
                       ),
+                      const SizedBox(
+                        width: 8,
+                      ),
+                      Text(
+                        stopsList[index].bdLocation,
+                        style: Theme.of(context).textTheme.titleSmall!.copyWith(
+                          color: Theme.of(context).textTheme.titleLarge!.color,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(
+                    left: 22,
+                  ),
+                  child: Container(
+                    height: 16,
+                    width: 2,
+                    color: Theme.of(context).dividerColor,
+                  ),
                 ),
               ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(
-              left: 22,
-            ),
-            child: Container(
-              height: 16,
-              width: 2,
-              color: Theme.of(context).dividerColor,
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 8, right: 8),
-            child: Row(
-              children: <Widget>[
-                Image.asset(
-                  ConstanceData.endPin,
-                  height: 30,
-                  width: 30,
-                ),
-                SizedBox(
-                  width: 8,
-                ),
-                Text(
-                  toAddress,
-                  style: Theme.of(context).textTheme.titleSmall!.copyWith(
-                        color: Theme.of(context).textTheme.titleLarge!.color,
-                        fontWeight: FontWeight.bold,
-                      ),
-                ),
-              ],
-            ),
-          ),
+            );
+          },),
           Divider(
             thickness: 1,
           ),
@@ -84,12 +78,12 @@ class CardWidget extends StatelessWidget {
                   radius: 12,
                   backgroundColor: Theme.of(context).disabledColor,
                   child: Icon(
-                    FontAwesomeIcons.dollarSign,
+                    FontAwesomeIcons.poundSign,
                     color: Theme.of(context).colorScheme.background,
                     size: 16,
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 8,
                 ),
                 Text(

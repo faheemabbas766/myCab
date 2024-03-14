@@ -1,5 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:my_cab/Language/LanguageData.dart';
 import 'package:my_cab/Language/appLocalizations.dart';
 import 'package:my_cab/constance/constance.dart';
@@ -9,8 +11,10 @@ import 'package:my_cab/constance/themes.dart';
 import 'package:my_cab/constance/constance.dart' as constance;
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import '../../Api & Routes/api.dart';
 import '../../providers/homepro.dart';
+import '../../providers/mappro.dart';
+import 'package:http/http.dart'as http;
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -20,12 +24,26 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderStateMixin {
   late AnimationController animationController;
   late BuildContext myContext;
+  Future<String> getAddressFromLatLng(double lat, double lng) async {
+    String mapKey = 'AIzaSyD7nCnza24yu8qP2q5B0o7y0Qg54oUdNE4';
+    String host = 'https://maps.google.com/maps/api/geocode/json';
+    final url = '$host?key=$mapKey&language=en&latlng=$lat,$lng';
+    var response = await http.get(Uri.parse(url));
+    if(response.statusCode == 200) {
+      Map data = jsonDecode(response.body);
+      String formattedAddress = data["results"][0]["formatted_address"];
+      print("response ==== $formattedAddress");
+      return formattedAddress;
+    } else {
+      return "Not Found";
+    }
+  }
 
   @override
   void initState() {
     myContext = context;
     _loadNextScreen();
-    animationController = new AnimationController(vsync: this, duration: Duration(milliseconds: 1000));
+    animationController = AnimationController(vsync: this, duration: const Duration(milliseconds: 1000));
     animationController.forward();
     super.initState();
   }
@@ -39,11 +57,32 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
       Provider.of<HomePro>(context, listen: false).token = prefs.getString('token')!;
       Provider.of<HomePro>(context, listen: false).userid = int.parse(prefs.getString('userid')!);
       Provider.of<HomePro>(context, listen: false).username = prefs.getString('username')!;
-
+      while(true){
+        if(await ConstanceData.handleLocationPermission(context)){
+          break;
+        }
+      }
+      var pos = await Geolocator.getCurrentPosition();
+      print("Latitude  is : ${pos.latitude}");
+      print("Longitude is : ${pos.longitude}");
+      print("Device ID:::::::::::::::::::: ${API.devid}");
+      Provider.of<MapPro>(context, listen: false).plat = pos.latitude;
+      Provider.of<MapPro>(context, listen: false).plong = pos.longitude;
+      Provider.of<MapPro>(context, listen: false).pickupController.text = await getAddressFromLatLng(pos.latitude,pos.longitude);
       Navigator.pushReplacementNamed(context, Routes.HOME);
     }
-    else
+    else{
+      while(true){
+        if(await ConstanceData.handleLocationPermission(context)){
+          break;
+        }
+      }
+      var pos = await Geolocator.getCurrentPosition();
+      print("Latitude  is : ${pos.latitude}");
+      print("Longitude is : ${pos.longitude}");
+      Provider.of<MapPro>(context, listen: false).londonLatLong = LatLng(pos.latitude, pos.longitude);
       Navigator.pushReplacementNamed(context, Routes.INTRODUCTION);
+    }
   }
 
   @override
@@ -98,10 +137,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
                 animation: animationController,
                 builder: (BuildContext context, Widget? child) {
                   return Transform(
-                    transform: new Matrix4.translationValues(
-                        0.0,
-                        120 *
-                            (1.0 -
+                    transform: Matrix4.translationValues(0.0, 120 * (1.0 -
                                 (AlwaysStoppedAnimation(Tween(begin: 0.2, end: 1.0)
                                             .animate(CurvedAnimation(parent: animationController, curve: Curves.fastOutSlowIn)))
                                         .value)

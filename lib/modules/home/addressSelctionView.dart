@@ -1,13 +1,19 @@
 import 'dart:convert';
+import 'dart:math';
 import 'package:fluttertoast/fluttertoast.dart'as ft;
 import 'package:flutter/material.dart';
 import 'package:my_cab/Language/appLocalizations.dart';
 import 'package:my_cab/constance/constance.dart';
 import 'package:http/http.dart'as http;
 import 'package:provider/provider.dart';
+import '../../Api & Routes/api.dart';
 import '../../providers/mappro.dart';
+import 'home_screen.dart';
 List<String> notes = [
   AppLocalizations.of('University of Washington'),
+  AppLocalizations.of('University of 2nd Address'),
+  AppLocalizations.of('University of 3rd Address'),
+  AppLocalizations.of('University of 4th Address'),
 ];
 class AddressSectionView extends StatefulWidget {
   final AnimationController animationController;
@@ -29,31 +35,6 @@ class AddressSectionView extends StatefulWidget {
   State<AddressSectionView> createState() => _AddressSectionViewState();
 }
 class _AddressSectionViewState extends State<AddressSectionView> {
-  Future<void> getLocationCoordinates(String location,{bool isPickup=true}) async {
-    const apiKey = 'AIzaSyD7nCnza24yu8qP2q5B0o7y0Qg54oUdNE4';
-    final geocodeUrl = 'https://maps.googleapis.com/maps/api/geocode/json?address=$location&key=$apiKey';
-    final response = await http.get(Uri.parse(geocodeUrl));
-    if (response.statusCode == 200) {
-      final data = json.decode(response.body);
-      if (data['results'] != null && data['results'].isNotEmpty) {
-        final result = data['results'][0];
-        final geometry = result['geometry'];
-        final location = geometry['location'];
-        final latitude = location['lat'];
-        final longitude = location['lng'];
-        if(isPickup){
-          Provider.of<MapPro>(context, listen: false).plat = latitude;
-          Provider.of<MapPro>(context, listen: false).plong = longitude;
-        }else{
-          Provider.of<MapPro>(context, listen: false).dlat = latitude;
-          Provider.of<MapPro>(context, listen: false).dlong = longitude;
-        }
-      }
-    } else {
-      throw Exception('Failed to load location coordinates');
-    }
-    return;
-  }
   List<String> pickupSuggestion = [];
   List<String> dropSuggestion = [];
   List<List<String>> stopSuggestion = [[], [], [], [], [],];
@@ -120,6 +101,20 @@ class _AddressSectionViewState extends State<AddressSectionView> {
                 padding: EdgeInsets.all(8.0),
                 child: Icon(
                   Icons.map,
+                  color: Colors.blue,
+                ),
+              ),
+            ),
+            Spacer(),
+            const Text('From Favorite',style: TextStyle(fontSize: 10)),
+            InkWell(
+              onTap: () async {
+                await getFav(Provider.of<MapPro>(context,listen: false).pickupController);
+              },
+              child: const Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Icon(
+                  Icons.favorite,
                   color: Colors.blue,
                 ),
               ),
@@ -272,6 +267,12 @@ class _AddressSectionViewState extends State<AddressSectionView> {
                                                 errorText: null,
                                                 border: InputBorder.none,
                                                 hintStyle: TextStyle(color: Theme.of(context).disabledColor),
+                                                suffixIcon: Provider.of<MapPro>(context,listen: false).pickupController.text !=''?
+                                                InkWell(
+                                                    onTap: (){
+                                                      Provider.of<MapPro>(context,listen: false).pickupController.text = '';
+                                                    },
+                                                    child: const Icon(Icons.close)):const SizedBox(),
                                               ),
                                             ),
                                             if (pickupSuggestion.isNotEmpty)
@@ -318,7 +319,7 @@ class _AddressSectionViewState extends State<AddressSectionView> {
                                                       ],
                                                     ),
                                                     TextFormField(
-                                                      maxLines: 1,
+                                                      maxLines: 2,
                                                       onChanged: (value){
                                                         onStopChanged(value, index);
                                                       },
@@ -330,6 +331,29 @@ class _AddressSectionViewState extends State<AddressSectionView> {
                                                         errorText: null,
                                                         border: InputBorder.none,
                                                         hintStyle: TextStyle(color: Theme.of(context).disabledColor),
+                                                        suffixIcon: Stack(
+                                                          children: [
+                                                            Provider.of<MapPro>(context,listen: false).stopsListController[index].text !=''?
+                                                            InkWell(
+                                                                onTap: (){
+                                                                  Provider.of<MapPro>(context,listen: false).stopsListController[index].text = '';
+                                                                },
+                                                                child: Icon(Icons.close, color: Theme.of(context).textTheme.titleLarge!.color,)):const SizedBox(),
+                                                            Padding(
+                                                              padding: const EdgeInsets.only(left: 35),
+                                                              child: InkWell(
+                                                                onTap: () {
+                                                                  Provider.of<MapPro>(context, listen: false).stopsListController.removeAt(index);
+                                                                  setState(() {
+                                                                  });
+                                                                },
+                                                                child: Icon(Icons.remove_circle,
+                                                                  color: Theme.of(context).textTheme.titleLarge!.color,
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        )
                                                       ),
                                                     ),
                                                     if (stopSuggestion[index].isNotEmpty)
@@ -337,23 +361,6 @@ class _AddressSectionViewState extends State<AddressSectionView> {
                                                   ],
                                                 ),
                                               ),
-                                            ),
-                                            Row(
-                                              children: <Widget>[
-                                                InkWell(
-                                                  onTap: () {
-                                                    Provider.of<MapPro>(context, listen: false).stopsListController.removeAt(index);
-                                                    setState(() {
-                                                    });
-                                                  },
-                                                  child: Padding(
-                                                    padding: const EdgeInsets.all(8.0),
-                                                    child: Icon(Icons.delete,
-                                                      color: Theme.of(context).textTheme.titleLarge!.color,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
                                             ),
                                           ],
                                         ),
@@ -398,6 +405,12 @@ class _AddressSectionViewState extends State<AddressSectionView> {
                                               errorText: null,
                                               border: InputBorder.none,
                                               hintStyle: TextStyle(color: Theme.of(context).disabledColor),
+                                              suffixIcon: Provider.of<MapPro>(context,listen: false).dropController.text !=''?
+                                              InkWell(
+                                                  onTap: (){
+                                                    Provider.of<MapPro>(context,listen: false).dropController.text = '';
+                                                  },
+                                                  child: Icon(Icons.close, color: Theme.of(context).textTheme.titleLarge!.color,)):const SizedBox()
                                             ),
                                           ),
                                           if (dropSuggestion.isNotEmpty)
@@ -406,85 +419,133 @@ class _AddressSectionViewState extends State<AddressSectionView> {
                                       ),
                                     ),
                                   ),
-                                  Row(
-                                    children: <Widget>[
-                                      Container(
-                                        height: 24,
-                                        width: 1,
-                                        color: Theme.of(context).dividerColor,
-                                      ),
-                                      InkWell(
-                                        onTap: () {
-                                          if(Provider.of<MapPro>(context, listen: false).stopsListController.length<5){
-                                            Provider.of<MapPro>(context, listen: false).stopsListController.add(TextEditingController());
-                                          }else{
-                                            ft.Fluttertoast.showToast(
-                                              msg: "Can't add more than 5 Stops",
-                                              toastLength: ft.Toast.LENGTH_LONG,
-                                            );
-                                          }
-                                          print("${Provider.of<MapPro>(context, listen: false).stopsListController.length}Controller Added");
-                                          setState(() {
-
-                                          });
-                                        },
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Icon(Icons.add_location_alt_sharp,
-                                            color: Theme.of(context).textTheme.titleLarge!.color,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
                                 ],
                               ),
                             ),
                           ],
                         ),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Card(
-                          color: Theme.of(context).primaryColor,
-                          elevation: 8,
-                          shape: const RoundedRectangleBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(16),),
-                          ),
-                          child: Column(
-                            children: <Widget>[
-                              InkWell(
-                                onTap: () async {
-                                  if(Provider.of<MapPro>(context, listen: false).pickupController.text.isEmpty || Provider.of<MapPro>(context, listen: false).dropController.text.isEmpty){
-                                    ft.Fluttertoast.showToast(
-                                      msg: "Pickup and Destination is Required!",
-                                      toastLength: ft.Toast.LENGTH_LONG,
-                                    );
-                                  }else{
-                                    await getLocationCoordinates(Provider.of<MapPro>(context, listen: false).pickupController.text);
-                                    await getLocationCoordinates(Provider.of<MapPro>(context, listen: false).dropController.text, isPickup: false);
-                                    Provider.of<MapPro>(context, listen: false).poliList = await ConstanceData.getRoutePolyLineList(context);
-                                    Provider.of<MapPro>(context, listen: false).calculateCenter();
-                                    Provider.of<MapPro>(context, listen: false).getStopsCoordinates();
-                                    widget.gpsClick();
-                                    widget.callback();
-                                  }
-                                },
-                                child: Center(
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(16.0),
-                                      child: Text(
-                                        AppLocalizations.of('Check Price'),
-                                        style: Theme.of(context).textTheme.titleLarge!.copyWith(color: Colors.white),
-                                      ),
-                                    )),
+                      Row(
+                        children: [
+                          Expanded(
+                            flex:2,
+                            child: Padding(
+                              padding: const EdgeInsets.all(16.0),
+                              child: Card(
+                                color: Theme.of(context).primaryColor,
+                                elevation: 8,
+                                shape: const RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.all(Radius.circular(16),),
+                                ),
+                                child: Column(
+                                  children: <Widget>[
+                                    InkWell(
+                                      onTap: () async {
+                                        try{
+                                          if(Provider.of<MapPro>(context, listen: false).pickupController.text.isEmpty || Provider.of<MapPro>(context, listen: false).dropController.text.isEmpty){
+                                            ft.Fluttertoast.showToast(
+                                              msg: "Pickup and Destination is Required!",
+                                              toastLength: ft.Toast.LENGTH_LONG,
+                                            );
+                                          }else{
+                                            API.showLoading("Fetching Info...", context);
+                                            await ConstanceData.getLocationCoordinates(Provider.of<MapPro>(context, listen: false).pickupController.text,context);
+                                            await ConstanceData.getLocationCoordinates(Provider.of<MapPro>(context, listen: false).dropController.text,context, isPickup: false);
+                                            await Provider.of<MapPro>(context, listen: false).getStopsCoordinates();
+                                            Provider.of<MapPro>(context, listen: false).poliList = await ConstanceData.getRoutePolyLineList(context);
+                                            Provider.of<MapPro>(context, listen: false).companyList = await API.getAllCompanies();
+                                            Navigator.pop(context);
+                                            widget.callback();
+                                            setState(() {
+
+                                            });
+                                          }
+                                        }catch(e){
+                                          Navigator.pop(context);
+                                          ft.Fluttertoast.showToast(
+                                            msg: 'Something is Wrong!!!',
+                                            toastLength: ft.Toast.LENGTH_LONG,
+                                          );
+                                        }
+                                      },
+                                      child: Center(
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(16.0),
+                                            child: Text(
+                                              AppLocalizations.of('Check Price'),
+                                              style: Theme.of(context).textTheme.titleLarge!.copyWith(color: Colors.white),
+                                            ),
+                                          )),
+                                    ),
+                                    SizedBox(
+                                      height: MediaQuery.of(context).padding.bottom,
+                                    )
+                                  ],
+                                ),
                               ),
-                              SizedBox(
-                                height: MediaQuery.of(context).padding.bottom,
-                              )
-                            ],
+                            ),
                           ),
-                        ),
+                          IconButton(onPressed: (){
+                            var temp = Provider.of<MapPro>(context,listen: false).pickupController.text;
+                            Provider.of<MapPro>(context,listen: false).pickupController.text = Provider.of<MapPro>(context,listen: false).dropController.text;
+                            Provider.of<MapPro>(context,listen: false).dropController.text = temp;
+                          }, icon: const Icon(Icons.swap_vert))
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(left: 35),
+                            child: InkWell(
+                              onTap: () {
+                                if(Provider.of<MapPro>(context, listen: false).stopsListController.length<5){
+                                  Provider.of<MapPro>(context, listen: false).stopsListController.add(TextEditingController());
+                                }else{
+                                  ft.Fluttertoast.showToast(
+                                    msg: "Can't add more than 5 Stops",
+                                    toastLength: ft.Toast.LENGTH_LONG,
+                                  );
+                                }
+                                print("${Provider.of<MapPro>(context, listen: false).stopsListController.length}Controller Added");
+                                setState(() {});
+                              },
+                              child: Row(
+                                children: [
+                                  Icon(Icons.add_location_alt_sharp,
+                                    color: Theme.of(context).textTheme.titleLarge!.color,
+                                  ),
+                                  Text("Add a stop", style: TextStyle(
+                                    color: Theme.of(context).textTheme.titleLarge!.color
+                                  ),),
+                                ],
+                              ),
+                            ),
+                          ),
+                          Spacer(),
+                          Container(
+                            padding: const EdgeInsets.all(8),
+                            alignment: Alignment.centerRight,
+                            child: SizedBox(
+                              width: MediaQuery.of(context).size.width > 340 ? 54 : 48,
+                              height: MediaQuery.of(context).size.width > 340 ? 54 : 48,
+                              child: Card(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(54.0),
+                                ),
+                                child: IconButton(
+                                  icon: Icon(
+                                    Icons.gps_fixed,
+                                    color: Theme.of(context).textTheme.titleLarge!.color,
+                                    size: MediaQuery.of(context).size.width > 340 ? 28 : 26,
+                                  ),
+                                  onPressed: () async {
+                                    widget.gpsClick();
+                                  },
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),
@@ -495,5 +556,36 @@ class _AddressSectionViewState extends State<AddressSectionView> {
         ),
       ],
     );
+  }
+  Future<void> getFav(TextEditingController controller) async {
+    String selectedFav = await showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return Dialog(
+          child: Expanded(
+            child: ListView.builder(
+              itemCount: notes.length,
+              itemBuilder: (context, index) {
+                return ListTile(
+                  leading: Icon(Icons.star),
+                  title: Text(notes[index]),
+                  trailing: IconButton(
+                    icon: const Icon(Icons.remove_circle),
+                    onPressed: () {
+                      // You can add remove functionality here
+                    },
+                  ),
+                  onTap: () {
+                    Navigator.pop(context, notes[index]);
+                  },
+                );
+              },
+            ),
+          ),
+        );
+      },
+    );
+    controller.text = selectedFav;
   }
 }
